@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RF Workflow">
+<meta name="theme-color" content="#0e0d0b">
+<title>Rodrigo Filmaker — Workflow</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0d0b;
+    --surface: #181714;
+    --surface2: #211f1b;
+    --border: #2e2b25;
+    --accent: #d4a853;
+    --accent2: #e8c97a;
+    --text: #f0ead8;
+    --muted: #7a7060;
+    --green: #6bbf8e;
+    --red: #e07070;
+    --blue: #7aafd4;
+    --purple: #a07ad4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    padding-bottom: 90px;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14,13,11,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    color: var(--accent);
+  }
+  .brand span { color: var(--text); font-weight: 400; }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .rate-badge {
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 10px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex: 1;
+    min-width: 80px;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: var(--surface2);
+  }
+
+  /* PAGES */
+  .page { display: none; padding: 16px; }
+  .page.active { display: block; }
+
+  /* STAT CARDS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent2);
+    line-height: 1;
+  }
+
+  .stat-sub { font-size: 9px; color: var(--muted); margin-top: 4px; }
+
+  /* META BAR */
+  .meta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .meta-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .meta-header strong { color: var(--accent2); font-size: 13px; }
+
+  .meta-track {
+    height: 8px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .meta-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    transition: width 0.6s ease;
+  }
+
+  .meta-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* ATRASO CARD */
+  .alert-card {
+    background: #e0707012;
+    border: 1px solid #e0707040;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .alert-label { font-size: 11px; color: var(--red); }
+  .alert-label small { display: block; font-size: 9px; color: var(--muted); margin-top: 2px; }
+  .alert-value { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--red); }
+
+  /* GRÁFICO */
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .chart-title {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 120px;
+    margin-bottom: 8px;
+  }
+
+  .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; }
+
+  .bars-inner {
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 110px;
+    width: 100%;
+  }
+
+  .bar {
+    flex: 1;
+    border-radius: 3px 3px 0 0;
+    transition: height 0.4s ease;
+    position: relative;
+    min-height: 3px;
+  }
+
+  .bar-label { font-size: 9px; color: var(--muted); margin-top: 5px; text-align: center; }
+
+  .chart-legend {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .leg { display: flex; align-items: center; gap: 5px; font-size: 9px; color: var(--muted); }
+  .leg-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+  /* WORKFLOW LIST */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+  }
+
+  .btn-add {
+    background: var(--accent);
+    color: #0e0d0b;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-add:active { background: var(--accent2); }
+
+  /* MODAL FORM */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px 16px 0 0;
+    padding: 24px 20px 40px;
+    width: 100%;
+    max-width: 480px;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+
+  .form-field {
+    margin-bottom: 14px;
+  }
+
+  .form-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .form-field select,
+  .form-field input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    padding: 12px 14px;
+    outline: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-field select:focus,
+  .form-field input:focus { border-color: var(--accent); }
+
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .btn-confirm {
+    width: 100%;
+    background: var(--green);
+    color: #0e0d0b;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: opacity 0.2s;
+  }
+  .btn-confirm:active { opacity: 0.8; }
+
+  /* ENTRY CARDS */
+  .entry-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .entry-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+
+  .entry-card.CAP::before { background: var(--blue); }
+  .entry-card.EDI::before { background: var(--purple); }
+  .entry-card.COR::before { background: var(--accent); }
+  .entry-card.ALT::before { background: var(--red); }
+  .entry-card.ENT::before { background: var(--green); }
+
+  .entry-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .entry-code {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent2);
+    letter-spacing: 0.5px;
+  }
+
+  .entry-projeto {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .entry-actions { display: flex; gap: 6px; align-items: center; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .badge-CAP { background: #7aafd420; color: var(--blue); border: 1px solid #7aafd440; }
+  .badge-EDI { background: #a07ad420; color: var(--purple); border: 1px solid #a07ad440; }
+  .badge-COR { background: #d4a85320; color: var(--accent); border: 1px solid #d4a85340; }
+  .badge-ALT { background: #e0707020; color: var(--red); border: 1px solid #e0707040; }
+  .badge-ENT { background: #6bbf8e20; color: var(--green); border: 1px solid #6bbf8e40; }
+
+  .entry-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .entry-meta { display: flex; gap: 12px; align-items: center; }
+
+  .cliente-tag {
+    font-size: 10px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 7px;
+  }
+
+  .status-tag {
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--muted);
+  }
+
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot-and { background: var(--accent); box-shadow: 0 0 5px var(--accent); }
+  .dot-con { background: var(--green); }
+  .dot-pen { background: var(--muted); }
+
+  .entry-financeiro { text-align: right; }
+  .entry-horas { font-size: 10px; color: var(--muted); }
+  .entry-valor { font-size: 13px; font-weight: 500; color: var(--green); }
+
+  .btn-del {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: color 0.2s;
+  }
+  .btn-del:active { color: var(--red); }
+
+  /* FILTROS */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    flex-shrink: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .filter-btn.active {
+    background: var(--accent);
+    color: #0e0d0b;
+    border-color: var(--accent);
+  }
+
+  /* GUIA PAGE */
+  .guide-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .guide-card-header {
+    padding: 14px 16px;
+    background: var(--surface2);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .guide-item {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .guide-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+    min-width: 22px;
+  }
+
+  .guide-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .guide-text strong { color: var(--text); }
+  .guide-code {
+    display: block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--accent2);
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  .empty-icon { font-size: 32px; margin-bottom: 12px; }
+
+  /* TOTAL CARD */
+  .total-card {
+    background: var(--surface2);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .total-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .total-vals { text-align: right; }
+  .total-horas { font-size: 11px; color: var(--muted); }
+  .total-valor { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--green); }
+
+  /* SAVE INDICATOR */
+  .save-indicator {
+    position: fixed;
+    top: 60px;
+    right: 16px;
+    background: var(--green);
+    color: #0e0d0b;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 300;
+  }
+
+  .save-indicator.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand">RF <span>Workflow</span></div>
+  <div class="topbar-right">
+    <span class="rate-badge">R$ 25/hr</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('dashboard')">📊 Dashboard</div>
+  <div class="tab" onclick="switchTab('workflow')">📋 Workflow</div>
+  <div class="tab" onclick="switchTab('guia')">⏱ Guia</div>
+</div>
+
+<!-- SAVE INDICATOR -->
+<div class="save-indicator" id="save-ind">✓ Salvo</div>
+
+<!-- PAGE: DASHBOARD -->
+<div class="page active" id="page-dashboard">
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Horas lançadas</div>
+      <div class="stat-value" id="s-horas">0h</div>
+      <div class="stat-sub">este mês</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">A receber</div>
+      <div class="stat-value" id="s-valor" style="color:var(--green)">R$ 0</div>
+      <div class="stat-sub">calculado</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Em andamento</div>
+      <div class="stat-value" id="s-ativos">0</div>
+      <div class="stat-sub">vídeos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Meta</div>
+      <div class="stat-value" id="s-meta">0%</div>
+      <div class="stat-sub">de R$ 5.000</div>
+    </div>
+  </div>
+
+  <div class="meta-card">
+    <div class="meta-header">
+      <span>Progresso da meta mensal</span>
+      <strong id="m-pct">0%</strong>
+    </div>
+    <div class="meta-track">
+      <div class="meta-fill" id="m-bar" style="width:0%"></div>
+    </div>
+    <div class="meta-details">
+      <span id="m-lancado">R$ 0,00 lançado</span>
+      <span id="m-faltam">faltam 200h</span>
+    </div>
+  </div>
+
+  <div class="alert-card">
+    <div class="alert-label">
+      ⚠️ Em atraso — Henrique
+      <small>Pagamento parcial de abr/2026</small>
+    </div>
+    <div class="alert-value">R$ 1.000</div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Horas × Valor por cliente</div>
+    <div class="chart-bars" id="chart-bars">
+      <div style="color:var(--muted);font-size:11px;text-align:center;width:100%;padding-top:20px;">
+        Adicione entradas no Workflow
+      </div>
+    </div>
+    <div class="chart-legend">
+      <div class="leg"><div class="leg-dot" style="background:rgba(122,175,212,0.5)"></div>Horas</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(107,191,142,0.5)"></div>Valor (R$)</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PAGE: WORKFLOW -->
+<div class="page" id="page-workflow">
+
+  <div class="section-header">
+    <span class="section-title">Entradas</span>
+    <button class="btn-add" onclick="openModal()">+ Nova</button>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="setFilter('Henrique',this)">Henrique</button>
+    <button class="filter-btn" onclick="setFilter('B2S',this)">B2S/Aumar</button>
+    <button class="filter-btn" onclick="setFilter('HDA',this)">HDA</button>
+    <button class="filter-btn" onclick="setFilter('Em andamento',this)">Em andamento</button>
+    <button class="filter-btn" onclick="setFilter('Concluído',this)">Concluídos</button>
+  </div>
+
+  <div class="total-card">
+    <div class="total-label">Total lançado</div>
+    <div class="total-vals">
+      <div class="total-horas" id="w-horas">0 horas</div>
+      <div class="total-valor" id="w-valor">R$ 0,00</div>
+    </div>
+  </div>
+
+  <div id="entries-list"></div>
+
+</div>
+
+<!-- PAGE: GUIA -->
+<div class="page" id="page-guia">
+
+  <div class="guide-card">
+    <div class="guide-card-header">📐 Padrão de nomenclatura</div>
+    <div class="guide-item">
+      <span class="guide-num">→</span>
+      <span class="guide-text">
+        Sempre use o formato:
+        <strong class="guide-code">ETAPA_NºVídeo.NºSequência | Cliente | Projeto</strong>
+      </span>
+    </div>
+    <div class="guide-item">
+      <span class="guide-num">→</span>
+      <span class="guide-text">
+        Exemplos reais:
+        <strong class="guide-code">CAP_001.00 | Henrique | Código do Valor</strong>
+        <strong class="guide-code">EDI_001.01 | Henrique | Código do Valor</strong>
+        <strong class="guide-code">ALT_001.03 | B2S | Aumar</strong>
+        <strong class="guide-code">ALT_001.04 | B2S | Aumar ← 2ª alteração</strong>
+      </span>
+    </div>
+  </div>
+
+  <div class="guide-card">
+    <div class="guide-card-header">🔢 Códigos de etapa</div>
+    <div class="guide-item"><span class="guide-num" style="color:var(--blue)">CAP</span><span class="guide-text">Captação de vídeo</span></div>
+    <div class="guide-item"><span class="guide-num" style="color:var(--purple)">EDI</span><span class="guide-text">Edição</span></div>
+    <div class="guide-item"><span class="guide-num" style="color:var(--accent)">COR</span><span class="guide-text">Correção de cor</span></div>
+    <div class="guide-item"><span class="guide-num" style="color:var(--red)">ALT</span><span class="guide-text">Alteração / Revisão (cada rodada = novo lançamento)</span></div>
+    <div class="guide-item"><span class="guide-num" style="color:var(--green)">ENT</span><span class="guide-text">Entrega final</span></div>
+  </div>
+
+  <div class="guide-card">
+    <div class="guide-card-header">⏱ Regras do Clockify</div>
+    <div class="guide-item"><span class="guide-num">01</span><span class="guide-text">Lance <strong>todos os dias</strong>, ao final do expediente</span></div>
+    <div class="guide-item"><span class="guide-num">02</span><span class="guide-text">Separe por <strong>projeto correto</strong>: B2S/Aumar · HDA Alfaiataria · Código do Valor</span></div>
+    <div class="guide-item"><span class="guide-num">03</span><span class="guide-text"><strong>1 entrada = 1 projeto</strong> — nunca misture</span></div>
+    <div class="guide-item"><span class="guide-num">04</span><span class="guide-text">Cada alteração = <strong>sufixo novo</strong> (.03, .04, .05…)</span></div>
+    <div class="guide-item"><span class="guide-num">05</span><span class="guide-text">Use exatamente o <strong>código gerado aqui</strong> como título no Clockify</span></div>
+  </div>
+
+  <div class="guide-card">
+    <div class="guide-card-header">📱 Como acessar em qualquer lugar</div>
+    <div class="guide-item"><span class="guide-num">📁</span><span class="guide-text"><strong>Google Drive:</strong> suba este arquivo e abra pelo Chrome no celular</span></div>
+    <div class="guide-item"><span class="guide-num">📓</span><span class="guide-text"><strong>Notion:</strong> cole o link do Drive num bloco "Embed" na sua página</span></div>
+    <div class="guide-item"><span class="guide-num">📲</span><span class="guide-text"><strong>App no celular:</strong> abra no Chrome → menu (⋮) → "Adicionar à tela inicial" — vira ícone igual a um app</span></div>
+    <div class="guide-item"><span class="guide-num">💾</span><span class="guide-text"><strong>Dados salvos:</strong> tudo que você lança fica salvo automaticamente no aparelho</span></div>
+  </div>
+
+</div>
+
+<!-- MODAL FORM -->
+<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-title">
+      Nova entrada
+      <button class="btn-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="form-field">
+      <label class="form-label">Etapa</label>
+      <select id="f-etapa">
+        <option value="CAP">CAP — Captação</option>
+        <option value="EDI">EDI — Edição</option>
+        <option value="COR">COR — Correção de cor</option>
+        <option value="ALT">ALT — Alteração</option>
+        <option value="ENT">ENT — Entrega</option>
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label class="form-label">Projeto / descrição</label>
+      <input type="text" id="f-projeto" placeholder="Ex: Código do Valor ep. 3">
+    </div>
+
+    <div class="form-row-2">
+      <div class="form-field">
+        <label class="form-label">Cliente</label>
+        <select id="f-cliente">
+          <option value="Henrique">Henrique</option>
+          <option value="B2S">B2S/Aumar</option>
+          <option value="HDA">HDA Alfaiataria</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Status</label>
+        <select id="f-status">
+          <option value="Em andamento">Em andamento</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Concluído">Concluído</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label class="form-label">Horas trabalhadas</label>
+      <input type="number" id="f-horas" placeholder="Ex: 2.5" min="0" step="0.5" inputmode="decimal">
+    </div>
+
+    <button class="btn-confirm" onclick="addEntry()">✓ Adicionar e salvar</button>
+  </div>
+</div>
+
+<script>
+  const RATE = 25;
+  const META = 5000;
+  let entries = JSON.parse(localStorage.getItem('rf_entries') || '[]');
+  let currentFilter = 'todos';
+  let nextId = parseInt(localStorage.getItem('rf_nextid') || '1');
+
+  function save() {
+    localStorage.setItem('rf_entries', JSON.stringify(entries));
+    localStorage.setItem('rf_nextid', String(nextId));
+    const ind = document.getElementById('save-ind');
+    ind.classList.add('show');
+    setTimeout(() => ind.classList.remove('show'), 1500);
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('page-' + tab).classList.add('active');
+  }
+
+  function openModal() {
+    document.getElementById('modal').classList.add('open');
+    document.getElementById('f-projeto').focus();
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+
+  function getNextSeq(cliente, num) {
+    return entries.filter(e => e.cliente === cliente && e.num === num).length;
+  }
+
+  function getNextNum(cliente) {
+    const clienteEntries = entries.filter(e => e.cliente === cliente);
+    if (clienteEntries.length === 0) return '001';
+    const nums = clienteEntries.map(e => parseInt(e.num));
+    return String(Math.max(...nums)).padStart(3, '0');
+  }
+
+  function addEntry() {
+    const etapa = document.getElementById('f-etapa').value;
+    const projeto = document.getElementById('f-projeto').value.trim() || 'Sem título';
+    const cliente = document.getElementById('f-cliente').value;
+    const status = document.getElementById('f-status').value;
+    const horas = parseFloat(document.getElementById('f-horas').value) || 0;
+
+    const num = getNextNum(cliente);
+    const seq = String(getNextSeq(cliente, num)).padStart(2, '0');
+
+    entries.push({ id: nextId++, etapa, projeto, cliente, status, horas, num, seq, ts: Date.now() });
+    save();
+    closeModal();
+    document.getElementById('f-projeto').value = '';
+    document.getElementById('f-horas').value = '';
+    render();
+  }
+
+  function removeEntry(id) {
+    if (!confirm('Remover esta entrada?')) return;
+    entries = entries.filter(e => e.id !== id);
+    save();
+    render();
+  }
+
+  function setFilter(f, btn) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderList();
+  }
+
+  function getCode(e) {
+    return `${e.etapa}_${e.num}.${e.seq}`;
+  }
+
+  function fmtMoney(v) {
+    return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  }
+
+  function dotClass(s) {
+    if (s === 'Em andamento') return 'dot dot-and';
+    if (s === 'Concluído') return 'dot dot-con';
+    return 'dot dot-pen';
+  }
+
+  function renderList() {
+    const list = document.getElementById('entries-list');
+    let filtered = entries;
+    if (currentFilter !== 'todos') {
+      filtered = entries.filter(e => e.cliente === currentFilter || e.status === currentFilter);
+    }
+
+    if (filtered.length === 0) {
+      list.innerHTML = `<div class="empty"><div class="empty-icon">🎬</div>Nenhuma entrada aqui ainda.<br>Toque em <strong>+ Nova</strong> para começar.</div>`;
+      return;
+    }
+
+    list.innerHTML = filtered.slice().reverse().map(e => `
+      <div class="entry-card ${e.etapa}">
+        <div class="entry-top">
+          <div>
+            <div class="entry-code">${getCode(e)}</div>
+            <div class="entry-projeto">${e.projeto}</div>
+          </div>
+          <div class="entry-actions">
+            <span class="badge badge-${e.etapa}">${e.etapa}</span>
+            <button class="btn-del" onclick="removeEntry(${e.id})">✕</button>
+          </div>
+        </div>
+        <div class="entry-bottom">
+          <div class="entry-meta">
+            <span class="cliente-tag">${e.cliente}</span>
+            <span class="status-tag"><span class="${dotClass(e.status)}"></span>${e.status}</span>
+          </div>
+          <div class="entry-financeiro">
+            <div class="entry-horas">${e.horas}h</div>
+            <div class="entry-valor">${fmtMoney(e.horas * RATE)}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    const totalH = filtered.reduce((a, e) => a + e.horas, 0);
+    const totalV = totalH * RATE;
+    document.getElementById('w-horas').textContent = totalH + ' horas';
+    document.getElementById('w-valor').textContent = fmtMoney(totalV);
+  }
+
+  function renderChart() {
+    const clientes = ['Henrique', 'B2S', 'HDA'];
+    const cores = { 'Henrique': '#7aafd4', 'B2S': '#a07ad4', 'HDA': '#d4a853' };
+    const dados = {};
+    clientes.forEach(c => {
+      const hrs = entries.filter(e => e.cliente === c).reduce((a, e) => a + e.horas, 0);
+      dados[c] = { horas: hrs, valor: hrs * RATE };
+    });
+
+    const maxVal = Math.max(...clientes.map(c => dados[c].valor), 1);
+    const container = document.getElementById('chart-bars');
+
+    if (clientes.every(c => dados[c].horas === 0)) {
+      container.innerHTML = '<div style="color:var(--muted);font-size:11px;text-align:center;width:100%;padding-top:20px;">Adicione entradas no Workflow</div>';
+      return;
+    }
+
+    container.innerHTML = `
+      <div style="display:flex;align-items:flex-end;gap:12px;width:100%;height:100%">
+        ${clientes.map(c => {
+          const ph = Math.max(4, (dados[c].horas / (maxVal / RATE)) * 100);
+          const pv = Math.max(4, (dados[c].valor / maxVal) * 100);
+          return `
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div style="display:flex;gap:3px;align-items:flex-end;height:110px;width:100%">
+                <div style="flex:1;background:${cores[c]}50;border:1px solid ${cores[c]}80;border-radius:3px 3px 0 0;height:${ph}%;position:relative"></div>
+                <div style="flex:1;background:var(--green);opacity:0.4;border:1px solid var(--green);border-radius:3px 3px 0 0;height:${pv}%;position:relative"></div>
+              </div>
+              <div style="font-size:9px;color:${cores[c]};text-align:center">${c}</div>
+              <div style="font-size:9px;color:var(--muted)">${dados[c].horas}h · ${fmtMoney(dados[c].valor)}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  function render() {
+    const totalH = entries.reduce((a, e) => a + e.horas, 0);
+    const totalV = totalH * RATE;
+    const pct = Math.min(100, (totalV / META) * 100);
+    const ativos = entries.filter(e => e.status === 'Em andamento').length;
+    const saldo = Math.max(0, META - totalV);
+    const horasRest = Math.max(0, Math.ceil(saldo / RATE));
+
+    document.getElementById('s-horas').textContent = totalH + 'h';
+    document.getElementById('s-valor').textContent = fmtMoney(totalV);
+    document.getElementById('s-ativos').textContent = ativos;
+    document.getElementById('s-meta').textContent = Math.round(pct) + '%';
+    document.getElementById('m-pct').textContent = Math.round(pct) + '%';
+    document.getElementById('m-bar').style.width = pct + '%';
+    document.getElementById('m-lancado').textContent = fmtMoney(totalV) + ' lançado';
+    document.getElementById('m-faltam').textContent = 'faltam ' + horasRest + 'h';
+
+    renderChart();
+    renderList();
+  }
+
+  render();
+</script>
+</body>
+</html>
