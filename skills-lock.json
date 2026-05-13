@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "storyboard-creation": {
+      "source": "inference-sh-skills/skills",
+      "sourceType": "github",
+      "skillPath": "guides/video/storyboard-creation/SKILL.md",
+      "computedHash": "6848d2b5a89a3648f7f528a0c08a91e6f4be659a7c233c1e6ebf8ed316fb5561"
+    }
+  }
+}
