@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrato de Prestação de Serviço</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0d0b;--surface:#181714;--surface2:#211f1b;--border:#2e2b25;--accent:#d4a853;--accent2:#e8c97a;--text:#f0ead8;--muted:#7a7060;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;padding:48px;max-width:800px;margin:0 auto;line-height:1.8;}
+@media print{body{background:#fff;color:#111;padding:24px;}}
+h1{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;letter-spacing:-1px;color:var(--accent2);margin-bottom:4px;}
+h2{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin:28px 0 10px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:16px;}
+.field{margin-bottom:14px;}
+.field label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px;}
+.field .val{font-size:13px;border-bottom:1px solid var(--border);padding-bottom:6px;}
+.clausula{margin-bottom:20px;}
+.clausula .num{color:var(--accent);font-size:11px;letter-spacing:1px;margin-bottom:4px;}
+.clausula p{font-size:12px;color:var(--muted);line-height:1.8;}
+.clausula .sub{font-size:11px;color:var(--muted);padding-left:16px;margin-top:6px;}
+.clausula .sub::before{content:'§ ';}
+hr{border:none;border-top:1px solid var(--border);margin:24px 0;}
+.sign-area{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px;}
+.sign-box{border-top:1px solid var(--border);padding-top:12px;font-size:11px;color:var(--muted);}
+.tag{display:inline-block;font-size:9px;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--accent);border-radius:20px;padding:2px 10px;color:var(--accent);margin-bottom:12px;}
+.highlight{background:rgba(212,168,83,.08);border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="tag">Contrato</div>
+<h1>Contrato de Prestação<br>de Serviço de Vídeo</h1>
+
+<hr>
+
+<div class="card">
+  <h2>Partes envolvidas</h2>
+  <div class="field"><label>Contratado (Videomaker)</label>
+    <div class="val">Nome: Rodrigo _________________________ &nbsp;&nbsp; CPF: ___.___.___-__</div></div>
+  <div class="field"><label>Contratante (Salão / Cliente)</label>
+    <div class="val">Nome: __________________________________ &nbsp;&nbsp; CPF/CNPJ: __________________</div></div>
+  <div class="field"><label>Endereço do Contratante</label>
+    <div class="val">___________________________________________________</div></div>
+</div>
+
+<div class="clausula">
+  <div class="num">CLÁUSULA 1 · OBJETO</div>
+  <p>O CONTRATADO se compromete a realizar a produção audiovisual descrita abaixo, para uso nas redes sociais do CONTRATANTE:</p>
+  <div class="highlight">
+    _____ Reel(s) · _____ Vídeo(s) de Feed · _____ Story(ies)<br>
+    Gravação em: _____________________________ · Data: _____ / _____ / _______
+  </div>
+</div>
+
+<div class="clausula">
+  <div class="num">CLÁUSULA 2 · VALOR E PAGAMENTO</div>
+  <p>O valor total pelos serviços é de <strong>R$ _________,00</strong>, a ser pago da seguinte forma:</p>
+  <div class="sub">50% (R$ _______,00) na assinatura deste contrato — via PIX/transferência.</div>
+  <div class="sub">50% (R$ _______,00) na aprovação do material final.</div>
+  <p style="margin-top:8px;font-size:11px;color:var(--muted);">O não pagamento do sinal em até 3 dias úteis cancela automaticamente o agendamento.</p>
+</div>
+
+<div class="clausula">
+  <div class="num">CLÁUSULA 3 · PRAZO DE ENTREGA</div>
+  <p>O primeiro corte será entregue em até <strong>_____ dias úteis</strong> após a data de gravação. O prazo final de entrega depende da aprovação do CONTRATANTE dentro de 48 horas por rodada de revisão.</p>
+</div>
+
+<div class="clausula">
+  <div class="num">CLÁUSULA 4 · REVISÕES</div>
+  <p>Estão inclusas <strong>2 (duas) rodadas de revisão</strong>. Alterações adicionais serão cobradas a R$ _______,00 por hora de edição.</p>
+  <div class="sub">Revisão de conteúdo (cortes, ordem, tomadas) — inclusa.</div>
+  <div class="sub">Refazimento total do projeto por mudança de escopo — não incluso.</div>
+</div>
+
+<div class="clausula">
+  <div class="num">CLÁUSULA 5 · DIREITOS DE USO</div>
+  <p>O CONTRATANTE recebe licença de uso do material para suas redes sociais e comunicação institucional. É vedada a revenda ou licenciamento a terceiros sem autorização prévia por escrito.</p>
+  <div class="sub">O CONTRATADO mantém o direito de usar o material em seu portfólio, salvo solicitação expressa em contrário.</div>
+</div>
+
+<div class="clausula">
+  <div class="num">CLÁUSULA 6 · CANCELAMENTO</div>
+  <p>Em caso de cancelamento pelo CONTRATANTE:</p>
+  <div class="sub">Com mais de 7 dias de antecedência: devolução de 80% do sinal.</div>
+  <div class="sub">Entre 3 e 7 dias: devolução de 50% do sinal.</div>
+  <div class="sub">Menos de 3 dias ou no dia: sinal não reembolsável.</div>
+  <p style="margin-top:8px;">Em caso de cancelamento por força maior comprovada, as partes negociam novo agendamento sem custo.</p>
+</div>
+
+<div class="clausula">
+  <div class="num">CLÁUSULA 7 · AUTORIZAÇÃO DE IMAGEM</div>
+  <p>O CONTRATANTE declara ter obtido autorização de imagem de todos os clientes e funcionários que aparecerem nas gravações, responsabilizando-se por eventuais reclamações de terceiros.</p>
+</div>
+
+<div class="clausula">
+  <div class="num">CLÁUSULA 8 · FORO</div>
+  <p>Fica eleito o foro da comarca de _________________ para dirimir quaisquer questões oriundas deste contrato.</p>
+</div>
+
+<hr>
+
+<p style="font-size:11px;color:var(--muted);text-align:center;">Assinado em _____ de _____________ de _______, em 2 (duas) vias de igual teor.</p>
+
+<div class="sign-area">
+  <div class="sign-box">
+    <strong>CONTRATADO</strong><br>
+    Rodrigo _____________________<br>
+    Videomaker<br><br><br>
+    _____________________________<br>
+    Assinatura
+  </div>
+  <div class="sign-box">
+    <strong>CONTRATANTE</strong><br>
+    _____________________________<br>
+    Salão / Nome<br><br><br>
+    _____________________________<br>
+    Assinatura
+  </div>
+</div>
+
+</body>
+</html>
