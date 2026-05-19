@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing de Cliente — RF Workflow</title>
+<style>
+  :root {
+    --bg: #0e0d0b;
+    --surface: #181714;
+    --border: #2a2720;
+    --accent: #d4a853;
+    --accent-dim: #a07830;
+    --text: #f0ead8;
+    --muted: #8a8070;
+    --danger: #c0392b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap');
+  body { font-family: 'DM Mono', monospace; }
+  h1, h2, h3, label { font-family: 'Syne', sans-serif; }
+
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 50px 60px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid var(--accent);
+  }
+  .brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .field-group {
+    margin-bottom: 16px;
+  }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    padding: 10px 14px;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.6;
+  }
+  select option {
+    background: var(--surface);
+  }
+
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* Checkbox grid */
+  .check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 10px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    user-select: none;
+  }
+  .check-item:hover {
+    border-color: var(--accent-dim);
+  }
+  .check-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .check-item span {
+    font-size: 13px;
+    color: var(--text);
+            word-break: break-word;
+  }
+
+  /* Radio options */
+  .radio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+  .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    user-select: none;
+  }
+  .radio-item:hover { border-color: var(--accent-dim); }
+  .radio-item input[type="radio"] {
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .radio-item span { font-size: 13px; color: var(--text); }
+
+  /* Scale */
+  .scale-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .scale-btn {
+    flex: 1;
+    min-width: 40px;
+    text-align: center;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 4px;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--muted);
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .scale-btn:hover { border-color: var(--accent-dim); color: var(--text); }
+  .scale-btn.selected { border-color: var(--accent); background: rgba(212,168,83,0.1); color: var(--accent); }
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  .submit-area {
+    text-align: center;
+    padding-top: 20px;
+  }
+  .submit-btn {
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 6px;
+    padding: 14px 40px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.85; }
+
+  .print-btn {
+    background: transparent;
+    color: var(--accent);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 24px;
+    cursor: pointer;
+    margin-left: 12px;
+    transition: all 0.2s;
+  }
+  .print-btn:hover { background: rgba(212,168,83,0.1); }
+
+  .required { color: var(--accent); }
+
+  @media print {
+    body { background: #fff; color: #111; padding: 0; }
+    .page { border: none; border-radius: 0; padding: 30px; box-shadow: none; background: #fff; max-width: 100%; }
+    .brand { color: #b8860b; }
+    h1 { color: #111; }
+    .section-title { color: #b8860b; border-bottom-color: #ddd; }
+    label { color: #666; }
+    input, select, textarea { border-color: #ccc; color: #111; background: #fff; }
+    .check-item, .radio-item, .scale-btn { background: #fff; border-color: #ccc; color: #111; }
+    .check-item span, .radio-item span { color: #111; }h
+    .note { color: #888; }
+    .submit-area { display: none; }
+    .print-btn { display: none; }
+    .header { border-bottom-color: #b8860b; }
+  }
+  @media (max-width: 600px) {
+    .page { padding: 30px 20px; }
+    .row-2, .row-3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">RF Workflow</div>
+    <h1>Briefing de Cliente</h1>
+    <p class="subtitle">
+      Preencha com calma — quanto mais detalhe você der,<br>
+      melhor o resultado final do seu vídeo.
+    </p>
+  </div>
+
+  <!-- BLOCO 1: IDENTIFICAÇÃO -->
+  <div class="section">
+    <div class="section-title">01 — Identificação</div>
+    <div class="row-2">
+      <div class="field-group">
+        <label>Nome do salão / estabelecimento <span class="required">*</span></label>
+        <input type="text" placeholder="Ex: Studio Cabelo & Arte">
+      </div>
+      <div class="field-group">
+        <label>Nome do responsável <span class="required">*</span></label>
+        <input type="text" placeholder="Ex: Juliana Ferreira">
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="field-group">
+        <label>WhatsApp <span class="required">*</span></label>
+        <input type="tel" placeholder="(11) 99999-9999">
+      </div>
+      <div class="field-group">
+        <label>Instagram do salão</label>
+        <input type="text" placeholder="@nomedoperfil">
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="field-group">
+        <label>Cidade / Bairro</label>
+        <input type="text" placeholder="Ex: São Paulo — Vila Madalena">
+      </div>
+      <div class="field-group">
+        <label>Data de entrega desejada</label>
+        <input type="date">
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 2: SOBRE O NEGÓCIO -->
+  <div class="section">
+    <div class="section-title">02 — Sobre o Negócio</div>
+    <div class="field-group">
+      <label>Descreva o seu salão em 2–3 frases</label>
+      <textarea placeholder="Ex: Somos um salão focado em coloração e tratamento capilar para mulheres 30+. Atendemos por agendamento, ambiente climatizado e aconchegante..."></textarea>
+    </div>
+    <div class="field-group">
+      <label>Qual é o seu público-alvo principal?</label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"><span>Mulheres 18–25</span></label>
+        <label class="check-item"><input type="checkbox"><span>Mulheres 26–35</span></label>
+        <label class="check-item"><input type="checkbox"><span>Mulheres 36–50</span></label>
+        <label class="check-item"><input type="checkbox"><span>Mulheres 50+</span></label>
+        <label class="check-item"><input type="checkbox"><span>Homens</span></label>
+        <label class="check-item"><input type="checkbox"><span>Noivas</span></label>
+        <label class="check-item"><input type="checkbox"><span>Todos os públicos</span></label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Quais serviços você mais quer destacar neste vídeo? <span class="required">*</span></label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"><span>Corte feminino</span></label>
+        <label class="check-item"><input type="checkbox"><span>Coloração / Mechas</span></label>
+        <label class="check-item"><input type="checkbox"><span>Tratamento / Hidratação</span></label>
+        <label class="check-item"><input type="checkbox"><span>Alisamento / Progressiva</span></label>
+        <label class="check-item"><input type="checkbox"><span>Penteado / Noiva</span></label>
+        <label class="check-item"><input type="checkbox"><span>Barba / Corte masculino</span></label>
+        <label class="check-item"><input type="checkbox"><span>Manicure / Pedicure</span></label>
+        <label class="check-item"><input type="checkbox"><span>Maquiagem</span></label>
+        <label class="check-item"><input type="checkbox"><span>Outro</span></label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>O que diferencia seu salão da concorrência?</label>
+      <textarea placeholder="Ex: Usamos produtos veganos, temos estacionamento gratuito, atendimento personalizado..."></textarea>
+    </div>
+  </div>
+
+  <!-- BLOCO 3: OBJETIVO DO VÍDEO -->
+  <div class="section">
+    <div class="section-title">03 — Objetivo do Vídeo</div>
+    <div class="field-group">
+      <label>Para que vai servir este vídeo? <span class="required">*</span></label>
+      <div class="radio-grid">
+        <label class="radio-item"><input type="radio" name="objetivo"><span>Atrair novos clientes</span></label>
+        <label class="radio-item"><input type="radio" name="objetivo"><span>Mostrar resultado / antes-depois</span></label>
+        <label class="radio-item"><input type="radio" name="objetivo"><span>Apresentar o salão</span></label>
+        <label class="radio-item"><input type="radio" name="objetivo"><span>Anúncio pago (tráfego)</span></label>
+        <label class="radio-item"><input type="radio" name="objetivo"><span>Conteúdo para feed/Reels</span></label>
+        <label class="radio-item"><input type="radio" name="objetivo"><span>Divulgar promoção</span></label>
+        <label class="radio-item"><input type="radio" name="objetivo"><span>Outro</span></label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Onde vai ser publicado?</label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"><span>Instagram Reels</span></label>
+        <label class="check-item"><input type="checkbox"><span>Instagram Feed</span></label>
+        <label class="check-item"><input type="checkbox"><span>Instagram Stories</span></label>
+        <label class="check-item"><input type="checkbox"><span>TikTok</span></label>
+        <label class="check-item"><input type="checkbox"><span>WhatsApp Status</span></label>
+        <label class="check-item"><input type="checkbox"><span>YouTube</span></label>
+        <label class="check-item"><input type="checkbox"><span>Anúncio pago</span></label>
+        <label class="check-item"><input type="checkbox"><span>Televisão / Telão</span></label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Qual ação você quer que o espectador tome ao ver o vídeo?</label>
+      <input type="text" placeholder="Ex: Agendar pelo WhatsApp / Seguir o perfil / Clicar no link">
+    </div>
+    <div class="field-group">
+      <label>Tem alguma referência de vídeo que você gostou? (cole o link ou descreva)</label>
+      <textarea placeholder="Ex: Aquele Reels da fulana que mostrava antes e depois de coloração, com música animada..."></textarea>
+    </div>
+  </div>
+
+  <!-- BLOCO 4: ESTÉTICA E TOM -->
+  <div class="section">
+    <div class="section-title">04 — Estética e Tom</div>
+    <div class="field-group">
+      <label>Como você descreveria o tom do vídeo? <span class="required">*</span></label>
+      <div class="radio-grid">
+        <label class="radio-item"><input type="radio" name="tom"><span>Elegante / Premium</span></label>
+        <label class="radio-item"><input type="radio" name="tom"><span>Descontraído / Divertido</span></label>
+        <label class="radio-item"><input type="radio" name="tom"><span>Moderno / Trendy</span></label>
+        <label class="radio-item"><input type="radio" name="tom"><span>Aconchegante / Próximo</span></label>
+        <label class="radio-item"><input type="radio" name="tom"><span>Profissional / Técnico</span></label>
+        <label class="radio-item"><input type="radio" name="tom"><span>Inspirador / Emocional</span></label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Cores principais da sua marca / salão</label>
+      <input type="text" placeholder="Ex: Rosa, dourado e branco / Preto e off-white">
+    </div>
+    <div class="row-2">
+      <div class="field-group">
+        <label>Tem preferência de música?</label>
+        <input type="text" placeholder="Ex: Pop, funk, instrumental, sertanejo...">
+      </div>
+      <div class="field-group">
+        <label>Tem alguma música específica em mente?</label>
+        <input type="text" placeholder="Cole o link ou nome da música">
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Vai ter narração / voz over?</label>
+      <div class="radio-grid">
+        <label class="radio-item"><input type="radio" name="voz"><span>Sim, minha voz</span></label>
+        <label class="radio-item"><input type="radio" name="voz"><span>Sim, voz gerada</span></label>
+        <label class="radio-item"><input type="radio" name="voz"><span>Não, só música</span></label>
+        <label class="radio-item"><input type="radio" name="voz"><span>A decidir</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 5: GRAVAÇÃO -->
+  <div class="section">
+    <div class="section-title">05 — Gravação</div>
+    <div class="field-group">
+      <label>O que você quer mostrar no vídeo?</label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"><span>Ambiente do salão</span></label>
+        <label class="check-item"><input type="checkbox"><span>Procedimento em tempo real</span></label>
+        <label class="check-item"><input type="checkbox"><span>Antes e depois</span></label>
+        <label class="check-item"><input type="checkbox"><span>Depoimento de cliente</span></label>
+        <label class="check-item"><input type="checkbox"><span>Profissional em ação</span></label>
+        <label class="check-item"><input type="checkbox"><span>Produtos usados</span></label>
+        <label class="check-item"><input type="checkbox"><span>Texto e legenda animados</span></label>
+        <label class="check-item"><input type="checkbox"><span>Resultado final (close no cabelo)</span></label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Você já tem fotos ou vídeos prontos para usar?</label>
+      <div class="radio-grid">
+        <label class="radio-item"><input type="radio" name="material"><span>Sim, tenho bastante</span></label>
+        <label class="radio-item"><input type="radio" name="material"><span>Tenho alguns</span></label>
+        <label class="radio-item"><input type="radio" name="material"><span>Quase nada</span></label>
+        <label class="radio-item"><input type="radio" name="material"><span>Nada — gravamos tudo do zero</span></label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Haverá sessão de gravação no salão?</label>
+      <div class="radio-grid">
+        <label class="radio-item"><input type="radio" name="gravacao"><span>Sim — agendamos juntos</span></label>
+        <label class="radio-item"><input type="radio" name="gravacao"><span>Sim — data já definida</span></label>
+        <label class="radio-item"><input type="radio" name="gravacao"><span>Não — só edição de material existente</span></label>
+        <label class="radio-item"><input type="radio" name="gravacao"><span>A decidir</span></label>
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="field-group">
+        <label>Data disponível para gravação</label>
+        <input type="date">
+      </div>
+      <div class="field-group">
+        <label>Horário preferido</label>
+        <input type="text" placeholder="Ex: Manhã (9h–12h), tarde...">
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Observações sobre a gravação</label>
+      <textarea placeholder="Ex: Prefiro que seja numa terça ou quarta pois é menos movimentado..."></textarea>
+    </div>
+  </div>
+
+  <!-- BLOCO 6: MÉTRICAS E EXPECTATIVAS -->
+  <div class="section">
+    <div class="section-title">06 — Expectativas</div>
+    <div class="field-group">
+      <label>Qual o resultado mais importante que você espera com este vídeo?</label>
+      <textarea placeholder="Ex: Quero que mais gente agende coloração / Quero aumentar meu número de seguidores..."></textarea>
+    </div>
+    <div class="field-group">
+      <label>Como você vai medir se o vídeo funcionou?</label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"><span>Novos seguidores</span></label>
+        <label class="check-item"><input type="checkbox"><span>Mensagens no WhatsApp</span></label>
+        <label class="check-item"><input type="checkbox"><span>Agendamentos</span></label>
+        <label class="check-item"><input type="checkbox"><span>Visualizações / Alcance</span></label>
+        <label class="check-item"><input type="checkbox"><span>Compartilhamentos</span></label>
+        <label class="check-item"><input type="checkbox"><span>Vendas diretas</span></label>
+        <label class="check-item"><input type="checkbox"><span>Não sei ainda</span></label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Em uma escala de 1 a 5, o quanto você está aberto(a) a sugestões criativas?</label>
+      <div class="scale-row" id="scale-criativo">
+        <div class="scale-btn" onclick="selectScale('scale-criativo', this)">1</div>
+        <div class="scale-btn" onclick="selectScale('scale-criativo', this)">2</div>
+        <div class="scale-btn" onclick="selectScale('scale-criativo', this)">3</div>
+        <div class="scale-btn" onclick="selectScale('scale-criativo', this)">4</div>
+        <div class="scale-btn" onclick="selectScale('scale-criativo', this)">5</div>
+      </div>
+      <div class="scale-labels"><span>Quero exatamente o que pedi</span><span>Confio na criatividade do editor</span></div>
+    </div>
+    <div class="field-group">
+      <label>Tem mais alguma informação importante que eu deva saber?</label>
+      <textarea placeholder="Ex: Não pode aparecer o rosto de nenhuma cliente sem autorização / Temos parceria com marca X e pode aparecer o logo..."></textarea>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SUBMIT -->
+  <div class="submit-area">
+    <p style="font-size:12px; color: var(--muted); margin-bottom:20px;">
+      Ao enviar este briefing você confirma que as informações acima são verdadeiras<br>e autoriza o início do projeto conforme combinado.
+    </p>
+    <button class="submit-btn" onclick="alert('Briefing registrado! Entro em contato em breve.')">Enviar Briefing</button>
+    <button class="print-btn" onclick="window.print()">Imprimir / Salvar PDF</button>
+  </div>
+
+</div>
+
+<script>
+  function selectScale(groupId, btn) {
+    const group = document.getElementById(groupId);
+    group.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+</script>
+
+</body>
+</html>
