@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Orbit — Gravar Tela</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #00FF00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Escala o frame 1080×1920 para caber na janela mantendo proporção */
+  #frame {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    background: #00FF00;
+    transform-origin: top left;
+    overflow: hidden;
+  }
+
+  /* ---- Cartões ---- */
+  .card {
+    position: absolute;
+    width: 220px;
+    height: 310px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+    transform-origin: center center;
+    will-change: transform;
+    /* começa invisível — JS controla */
+    opacity: 0;
+  }
+
+  .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Fallback quando não há imagem */
+  .card-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    padding: 16px;
+  }
+
+  .card-placeholder .icon { font-size: 40px; }
+
+  /* ---- UI ---- */
+  #ui {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+  }
+
+  button {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  button:hover { opacity: 0.85; }
+
+  #btnStart { background: #111; color: #fff; }
+  #btnRepeat { background: #111; color: #fff; display: none; }
+
+  /* ---- Contador (debug) ---- */
+  #timer {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: monospace;
+    font-size: 13px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div id="frame">
+  <!-- 4 cartões — substitua os src por imagens reais -->
+  <div class="card" id="c0">
+    <div class="card-placeholder" style="background: linear-gradient(135deg,#1a1a2e,#16213e);">
+      <div class="icon">📸</div>
+      <div>Post 1</div>
+      <div style="font-size:11px;opacity:.6;">substitua pela sua miniatura</div>
+    </div>
+  </div>
+  <div class="card" id="c1">
+    <div class="card-placeholder" style="background: linear-gradient(135deg,#0f3460,#533483);">
+      <div class="icon">🎬</div>
+      <div>Post 2</div>
+      <div style="font-size:11px;opacity:.6;">substitua pela sua miniatura</div>
+    </div>
+  </div>
+  <div class="card" id="c2">
+    <div class="card-placeholder" style="background: linear-gradient(135deg,#e94560,#0f3460);">
+      <div class="icon">✂️</div>
+      <div>Post 3</div>
+      <div style="font-size:11px;opacity:.6;">substitua pela sua miniatura</div>
+    </div>
+  </div>
+  <div class="card" id="c3">
+    <div class="card-placeholder" style="background: linear-gradient(135deg,#2d6a4f,#1b4332);">
+      <div class="icon">💇</div>
+      <div>Post 4</div>
+      <div style="font-size:11px;opacity:.6;">substitua pela sua miniatura</div>
+    </div>
+  </div>
+</div>
+
+<div id="timer">0.00s</div>
+<div id="ui">
+  <button id="btnStart">▶ Começar</button>
+  <button id="btnRepeat">↺ Repetir</button>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  CONFIGURAÇÃO
+// ─────────────────────────────────────────────
+const DURATION      = 9;      // segundos totais do efeito
+const ORBIT_PERIOD  = 3;      // segundos por volta completa
+const ENTER_START   = 0.2;    // segundo em que os cartões começam a aparecer
+const ENTER_DUR     = 0.5;    // duração do fade-in de cada cartão
+
+// Centro da órbita (em px dentro do frame 1080×1920)
+const CX = 540;
+const CY = 960;
+
+// Semi-eixos da elipse (horizontal, vertical)
+const RX = 340;
+const RY = 120;
+
+// Inclinação da elipse (graus)
+const TILT = -12;
+
+// Escala dos cartões: frente vs trás
+const SCALE_FRONT = 1.0;
+const SCALE_BACK  = 0.75;
+
+// Opacidade: frente vs trás
+const ALPHA_FRONT = 1.0;
+const ALPHA_BACK  = 0.6;
+
+// ─────────────────────────────────────────────
+//  ESTADO
+// ─────────────────────────────────────────────
+const cards = [
+  document.getElementById('c0'),
+  document.getElementById('c1'),
+  document.getElementById('c2'),
+  document.getElementById('c3'),
+];
+
+const N = cards.length;
+let startTime = null;
+let rafId     = null;
+let running   = false;
+
+// Offsets angulares iniciais (distribuídos uniformemente)
+const offsets = cards.map((_, i) => (i / N) * Math.PI * 2);
+
+// ─────────────────────────────────────────────
+//  GEOMETRIA
+// ─────────────────────────────────────────────
+function ellipsePoint(angle) {
+  const rad = TILT * Math.PI / 180;
+  const ex  = RX * Math.cos(angle);
+  const ey  = RY * Math.sin(angle);
+  return {
+    x: CX + ex * Math.cos(rad) - ey * Math.sin(rad),
+    y: CY + ex * Math.sin(rad) + ey * Math.cos(rad),
+    // sin(angle) positivo = parte de baixo da elipse = frente
+    depth: Math.sin(angle),
+  };
+}
+
+// ─────────────────────────────────────────────
+//  EASING
+// ─────────────────────────────────────────────
+function easeInOut(t) {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+}
+
+// ─────────────────────────────────────────────
+//  RENDER FRAME
+// ─────────────────────────────────────────────
+function render(ts) {
+  if (!running) return;
+  if (!startTime) startTime = ts;
+
+  const elapsed = (ts - startTime) / 1000; // segundos
+  document.getElementById('timer').textContent = elapsed.toFixed(2) + 's';
+
+  // Ângulo de rotação (rad/s = 2π / período)
+  const omega   = (2 * Math.PI) / ORBIT_PERIOD;
+  const angle0  = elapsed * omega;
+
+  // Ordena cartões por profundidade (trás → frente)
+  const positions = cards.map((card, i) => {
+    const ang = angle0 + offsets[i];
+    return { card, i, ...ellipsePoint(ang) };
+  });
+  positions.sort((a, b) => a.depth - b.depth);
+
+  // Aplica z-order
+  positions.forEach((p, order) => {
+    p.card.style.zIndex = order;
+  });
+
+  // Anima cada cartão
+  cards.forEach((card, i) => {
+    const ang   = angle0 + offsets[i];
+    const pos   = ellipsePoint(ang);
+
+    // depth vai de -1 (topo/trás) a +1 (base/frente)
+    const t     = (pos.depth + 1) / 2;         // 0 = trás, 1 = frente
+    const scale = SCALE_BACK + t * (SCALE_FRONT - SCALE_BACK);
+    const alpha = ALPHA_BACK + t * (ALPHA_FRONT - ALPHA_BACK);
+
+    // Fade de entrada
+    let entryAlpha = 1;
+    const enterT  = (elapsed - ENTER_START) / ENTER_DUR - i * 0.15;
+    if (enterT < 0)   entryAlpha = 0;
+    else if (enterT < 1) entryAlpha = easeInOut(Math.min(enterT, 1));
+
+    const finalAlpha = alpha * entryAlpha;
+
+    card.style.opacity   = finalAlpha;
+    card.style.transform = `translate(${pos.x - 110}px, ${pos.y - 155}px) scale(${scale})`;
+  });
+
+  // Fim do efeito
+  if (elapsed >= DURATION) {
+    end();
+    return;
+  }
+
+  rafId = requestAnimationFrame(render);
+}
+
+// ─────────────────────────────────────────────
+//  CONTROLES
+// ─────────────────────────────────────────────
+function start() {
+  document.getElementById('btnStart').style.display = 'none';
+  document.getElementById('btnRepeat').style.display = 'none';
+  cards.forEach(c => { c.style.opacity = 0; c.style.zIndex = 0; });
+  startTime = null;
+  running   = true;
+  rafId     = requestAnimationFrame(render);
+}
+
+function end() {
+  running = false;
+  cancelAnimationFrame(rafId);
+  document.getElementById('btnRepeat').style.display = 'block';
+}
+
+function reset() {
+  cancelAnimationFrame(rafId);
+  running   = false;
+  startTime = null;
+  cards.forEach(c => { c.style.opacity = 0; });
+  document.getElementById('timer').textContent = '0.00s';
+  start();
+}
+
+document.getElementById('btnStart').addEventListener('click',  start);
+document.getElementById('btnRepeat').addEventListener('click', reset);
+
+// ─────────────────────────────────────────────
+//  ESCALA RESPONSIVA DO FRAME
+// ─────────────────────────────────────────────
+function scaleFrame() {
+  const frame   = document.getElementById('frame');
+  const scaleX  = window.innerWidth  / 1080;
+  const scaleY  = window.innerHeight / 1920;
+  const scale   = Math.min(scaleX, scaleY);
+  frame.style.transform = `scale(${scale})`;
+  // centralizar
+  const offX = (window.innerWidth  - 1080 * scale) / 2;
+  const offY = (window.innerHeight - 1920 * scale) / 2;
+  frame.style.marginLeft = offX + 'px';
+  frame.style.marginTop  = offY + 'px';
+}
+
+window.addEventListener('resize', scaleFrame);
+scaleFrame();
+</script>
+</body>
+</html>
