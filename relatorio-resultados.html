@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório de Resultados</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0d0b;--surface:#181714;--surface2:#211f1b;--border:#2e2b25;--accent:#d4a853;--accent2:#e8c97a;--text:#f0ead8;--muted:#7a7060;--green:#6bbf8e;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;padding:48px;max-width:800px;margin:0 auto;line-height:1.7;}
+@media print{body{background:#fff;color:#111;padding:24px;}}
+h1{font-family:'Syne',sans-serif;font-weight:800;font-size:32px;letter-spacing:-1px;color:var(--accent2);}
+h2{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;margin:32px 0 12px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:16px;}
+.tag{display:inline-block;font-size:9px;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--accent);border-radius:20px;padding:2px 10px;color:var(--accent);margin-bottom:12px;}
+.metric-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+.metric{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;}
+.metric .label{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.metric .before{font-size:18px;color:var(--muted);}
+.metric .after{font-size:22px;font-family:'Syne',sans-serif;font-weight:700;color:var(--green);}
+.metric .arrow{font-size:11px;color:var(--accent);margin:4px 0;}
+.metric .delta{font-size:11px;color:var(--green);}
+hr{border:none;border-top:1px solid var(--border);margin:24px 0;}
+.field{margin-bottom:14px;}
+.field label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px;}
+.field .val{font-size:13px;border-bottom:1px solid var(--border);padding-bottom:6px;min-height:28px;}
+.quote{background:rgba(212,168,83,.06);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:16px 20px;font-size:13px;color:var(--muted);font-style:italic;margin:16px 0;}
+.next-item{display:flex;gap:12px;font-size:12px;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--border);}
+.next-item:last-child{border:none;}
+.next-item .num{color:var(--accent);min-width:20px;}
+p{font-size:12px;color:var(--muted);margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<div class="tag">Relatório de Resultados</div>
+<h1>Resultados do<br>Projeto de Vídeo</h1>
+
+<hr>
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div class="field"><label>Salão</label><div class="val"></div></div>
+    <div class="field"><label>@ Instagram</label><div class="val"></div></div>
+    <div class="field"><label>Data da gravação</label><div class="val"></div></div>
+    <div class="field"><label>Data deste relatório</label><div class="val"></div></div>
+  </div>
+</div>
+
+<h2>📊 Crescimento — Antes vs. Depois</h2>
+<div class="card">
+  <div class="metric-row">
+    <div class="metric">
+      <div class="label">Seguidores</div>
+      <div class="before">_____</div>
+      <div class="arrow">↓</div>
+      <div class="after">_____</div>
+      <div class="delta">+ _____ novos</div>
+    </div>
+    <div class="metric">
+      <div class="label">Alcance mensal</div>
+      <div class="before">_____</div>
+      <div class="arrow">↓</div>
+      <div class="after">_____</div>
+      <div class="delta">+ ____%</div>
+    </div>
+    <div class="metric">
+      <div class="label">Views Reels</div>
+      <div class="before">_____</div>
+      <div class="arrow">↓</div>
+      <div class="after">_____</div>
+      <div class="delta">+ ____%</div>
+    </div>
+  </div>
+  <div class="metric-row">
+    <div class="metric">
+      <div class="label">Visitas ao perfil</div>
+      <div class="before">_____</div>
+      <div class="arrow">↓</div>
+      <div class="after">_____</div>
+      <div class="delta">+ ____%</div>
+    </div>
+    <div class="metric">
+      <div class="label">Cliques no link</div>
+      <div class="before">_____</div>
+      <div class="arrow">↓</div>
+      <div class="after">_____</div>
+      <div class="delta">+ ____%</div>
+    </div>
+    <div class="metric">
+      <div class="label">Agendamentos/sem</div>
+      <div class="before">_____</div>
+      <div class="arrow">↓</div>
+      <div class="after">_____</div>
+      <div class="delta">+ _____</div>
+    </div>
+  </div>
+</div>
+
+<h2>🎬 Vídeos entregues</h2>
+<div class="card">
+  <div class="field"><label>Reel principal — views</label><div class="val"></div></div>
+  <div class="field"><label>Reel 2 — views</label><div class="val"></div></div>
+  <div class="field"><label>Vídeo de feed — views</label><div class="val"></div></div>
+  <div class="field"><label>Stories — visualizações médias</label><div class="val"></div></div>
+  <div class="field"><label>Melhor comentário recebido</label><div class="val" style="min-height:40px;"></div></div>
+</div>
+
+<h2>💬 O que o salão disse</h2>
+<div class="quote">
+  "_____________________________________________<br>
+  _____________________________________________<br>
+  _____________________________________________"
+  <div style="margin-top:10px;font-size:11px;font-style:normal;">— _________________, @_________________</div>
+</div>
+
+<h2>📅 Próximos passos recomendados</h2>
+<div class="card">
+  <div class="next-item"><span class="num">→</span><span>Manter frequência de publicação: pelo menos 3x/semana</span></div>
+  <div class="next-item"><span class="num">→</span><span>Próxima sessão de gravação sugerida: _____ / _____ / _______</span></div>
+  <div class="next-item"><span class="num">→</span><span>Conteúdo recomendado para o próximo mês: ________________________</span></div>
+  <div class="next-item"><span class="num">→</span><span>Pacote mensal disponível a partir de R$ _______,00/mês</span></div>
+</div>
+
+<hr>
+<p style="text-align:center;font-size:11px;">Relatório preparado por Rodrigo Filmaker · _____ / _____ / _______</p>
+
+</body>
+</html>

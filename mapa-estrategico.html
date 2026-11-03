@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa Estratégico — Videomaker para Cabeleireiros</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0d0b;
+    --surface: #181714;
+    --surface2: #211f1b;
+    --border: #2e2b25;
+    --accent: #d4a853;
+    --accent2: #e8c97a;
+    --text: #f0ead8;
+    --muted: #7a7060;
+    --green: #6bbf8e;
+    --red: #e07070;
+    --blue: #7aafd4;
+    --purple: #a07ad4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+  }
+
+  /* ── LAYOUT ─────────────────────────────── */
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 28px 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-brand {
+    padding: 0 24px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .sidebar-brand .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+
+  .sidebar-brand .tagline {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .nav-group { margin-bottom: 8px; }
+
+  .nav-group-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 24px 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 24px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { color: var(--text); background: var(--surface2); }
+  .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(212,168,83,0.05); }
+
+  .nav-item .num {
+    font-size: 10px;
+    color: var(--accent);
+    min-width: 18px;
+  }
+
+  /* MAIN */
+  .main {
+    flex: 1;
+    max-width: 860px;
+    padding: 48px 56px;
+    overflow-x: hidden;
+  }
+
+  /* ── SECTIONS ────────────────────────────── */
+  .section {
+    margin-bottom: 72px;
+    scroll-margin-top: 32px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    color: var(--accent);
+    min-width: 28px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+  }
+
+  .section-tag {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-left: auto;
+  }
+
+  /* ── CARDS ───────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  .card-subtitle {
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* ── STEPS ───────────────────────────────── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    padding-bottom: 28px;
+    position: relative;
+  }
+
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .step-dot {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+    z-index: 1;
+  }
+
+  .step-dot.accent { border-color: var(--accent); color: var(--accent); }
+  .step-dot.green  { border-color: var(--green);  color: var(--green);  }
+
+  .step-content { padding-top: 5px; flex: 1; }
+
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .step-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+
+  /* ── CHECKLIST ───────────────────────────── */
+  .checklist { display: flex; flex-direction: column; gap: 6px; }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .check-item::before {
+    content: '○';
+    color: var(--border);
+    min-width: 14px;
+    margin-top: 1px;
+  }
+
+  .check-item.done { color: var(--green); }
+  .check-item.done::before { content: '✓'; color: var(--green); }
+
+  /* ── GRID ────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* ── FORM FIELDS (briefing) ──────────────── */
+  .field-group { margin-bottom: 20px; }
+
+  .field-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .field-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+
+  .field-item strong { color: var(--text); }
+
+  /* ── METRICS TABLE ───────────────────────── */
+  .metric-table { width: 100%; border-collapse: collapse; }
+
+  .metric-table th {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .metric-table td {
+    font-size: 12px;
+    padding: 12px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  .metric-table tr:last-child td { border-bottom: none; }
+
+  .metric-table td:first-child { color: var(--accent); font-weight: 500; }
+
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    padding: 2px 8px;
+    border: 1px solid;
+  }
+
+  .badge-green { border-color: var(--green); color: var(--green); }
+  .badge-blue  { border-color: var(--blue);  color: var(--blue);  }
+  .badge-muted { border-color: var(--border); color: var(--muted); }
+  .badge-accent{ border-color: var(--accent); color: var(--accent); }
+
+  /* ── CALLOUT ─────────────────────────────── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: rgba(212,168,83,0.05);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .callout strong { color: var(--accent); }
+
+  /* ── PHASE HEADER ────────────────────────── */
+  .phase {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    margin-top: 28px;
+  }
+
+  .phase-num {
+    background: var(--accent);
+    color: var(--bg);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .phase-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .phase-timing {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* ── CALENDAR ────────────────────────────── */
+  .cal-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 6px;
+    align-items: center;
+    font-size: 11px;
+  }
+
+  .cal-header { color: var(--muted); font-size: 10px; letter-spacing: 1px; }
+  .cal-week { color: var(--accent); font-size: 10px; }
+
+  .cal-cell {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 6px;
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.4;
+    min-height: 44px;
+  }
+
+  .cal-cell.filled { background: var(--surface2); color: var(--text); }
+  .cal-cell.accent-cell { border-color: var(--accent); color: var(--accent); }
+
+  /* ── POSITIONING BOX ─────────────────────── */
+  .position-box {
+    background: linear-gradient(135deg, rgba(212,168,83,0.08) 0%, transparent 100%);
+    border: 1px solid var(--accent);
+    border-radius: 14px;
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .position-box .main-phrase {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: var(--accent2);
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  .position-box .sub {
+    font-size: 12px;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ── MISC ────────────────────────────────── */
+  p { font-size: 12px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 7px;
+    color: var(--muted);
+    margin: 2px;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { padding: 28px 20px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .cal-row { grid-template-columns: 60px 1fr 1fr 1fr; }
+    .cal-row .hide-mobile { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── SIDEBAR ───────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo">RF. Mapa</div>
+      <div class="tagline">Videomaker · Cabeleireiros</div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Base</div>
+      <a class="nav-item active" href="#posicionamento"><span class="num">01</span>Posicionamento</a>
+      <a class="nav-item" href="#documentos"><span class="num">02</span>Documentos</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Operação</div>
+      <a class="nav-item" href="#workflow"><span class="num">03</span>Workflow por Projeto</a>
+      <a class="nav-item" href="#briefing"><span class="num">04</span>Briefing Completo</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Crescimento</div>
+      <a class="nav-item" href="#metricas"><span class="num">05</span>Métricas de Crescimento</a>
+      <a class="nav-item" href="#conteudo"><span class="num">06</span>Calendário de Conteúdo</a>
+      <a class="nav-item" href="#portfolio"><span class="num">07</span>Portfólio e Provas</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Referência</div>
+      <a class="nav-item" href="#checklist"><span class="num">08</span>Checklist Geral</a>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ──────────────────────────── -->
+  <main class="main">
+
+    <!-- ══════════════════════════════════
+         01 POSICIONAMENTO
+    ═══════════════════════════════════ -->
+    <section class="section" id="posicionamento">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2 class="section-title">Posicionamento</h2>
+        <span class="section-tag">Base</span>
+      </div>
+
+      <div class="position-box">
+        <div class="main-phrase">"O videomaker dos cabeleireiros."</div>
+        <div class="sub">Você não é videomaker genérico. Você é especialista no nicho de beleza. Isso vale mais do que qualquer portfólio variado — o cabeleireiro sente que você entende o mundo dele.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-subtitle">Bio padrão</div>
+          <div class="card-title">Use em todos os canais</div>
+          <div class="field-item">
+            Videomaker especializado em salões de beleza e cabeleireiros.<br>
+            Transformo o trabalho do seu salão em conteúdo que atrai clientes e lota agendas.
+          </div>
+          <div style="margin-top:10px;">
+            <span class="tag">Instagram</span>
+            <span class="tag">WhatsApp</span>
+            <span class="tag">LinkedIn</span>
+            <span class="tag">E-mail</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-subtitle">Proposta de valor</div>
+          <div class="card-title">O que você entrega</div>
+          <div class="checklist">
+            <div class="check-item">Vídeos que mostram a transformação do cliente</div>
+            <div class="check-item">Conteúdo adaptado para Reels e Stories</div>
+            <div class="check-item">Imagem profissional que justifica preços mais altos</div>
+            <div class="check-item">Material que trabalha para o salão 24h/dia</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Regra de ouro:</strong> Toda vez que você aparecer online — legenda, bio, stories, proposta — reforce que você é <em>especialista em salões</em>. Repetição constrói posicionamento.
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         02 DOCUMENTOS
+    ═══════════════════════════════════ -->
+    <section class="section" id="documentos">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2 class="section-title">Documentos Obrigatórios</h2>
+        <span class="section-tag">Base</span>
+      </div>
+
+      <p>Estes são os 6 documentos que você precisa ter prontos antes de atender qualquer cliente. Cada um protege você e profissionaliza a experiência do cliente.</p>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-dot accent">1</div>
+          <div class="step-content">
+            <div class="step-title">Briefing de Cliente</div>
+            <div class="step-desc">Formulário preenchido antes de qualquer produção. Capta: objetivo, estética, referências, logística e aprovações. Veja seção 04 para o template completo.</div>
+            <div class="checklist">
+              <div class="check-item">Google Forms ou PDF editável</div>
+              <div class="check-item">Enviado após o cliente confirmar o projeto</div>
+              <div class="check-item">Obrigatório antes da reunião de alinhamento</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-dot accent">2</div>
+          <div class="step-content">
+            <div class="step-title">Proposta Comercial</div>
+            <div class="step-desc">Documento formal com escopo, entregáveis, prazo e valor. Elimina ruído de negociação e define expectativas.</div>
+            <div class="field-item" style="margin-top:10px;">
+              <strong>Estrutura:</strong><br>
+              1. Entendimento do projeto<br>
+              2. O que está incluído (nº de vídeos, formatos, duração)<br>
+              3. O que <em>não</em> está incluído<br>
+              4. Prazo de entrega<br>
+              5. Valor e forma de pagamento<br>
+              6. Validade da proposta
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-dot accent">3</div>
+          <div class="step-content">
+            <div class="step-title">Contrato de Prestação de Serviço</div>
+            <div class="step-desc">Mesmo simples, precisa existir. Protege você em caso de não pagamento, mudança de escopo ou uso indevido do material.</div>
+            <div class="checklist">
+              <div class="check-item">Partes envolvidas (você + cliente)</div>
+              <div class="check-item">Descrição dos serviços</div>
+              <div class="check-item">Valor total e condições de pagamento</div>
+              <div class="check-item">Prazo de entrega</div>
+              <div class="check-item">Direitos de uso do material</div>
+              <div class="check-item">Cláusula de revisões (quantas estão inclusas)</div>
+              <div class="check-item">Política de cancelamento</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-dot accent">4</div>
+          <div class="step-content">
+            <div class="step-title">Checklist de Produção</div>
+            <div class="step-desc">Lista do que filmar em cada sessão. Evita que você esqueça de capturar algo importante no dia.</div>
+            <div class="checklist">
+              <div class="check-item">Entrada/fachada do salão</div>
+              <div class="check-item">Espaço interno e detalhes de ambientação</div>
+              <div class="check-item">Processo do serviço (passo a passo)</div>
+              <div class="check-item">Detalhe: mãos, tesoura, produto sendo aplicado</div>
+              <div class="check-item">Transformação: antes e depois</div>
+              <div class="check-item">Reação do cliente no final</div>
+              <div class="check-item">Cabeleireiro trabalhando (perfil, concentração)</div>
+              <div class="check-item">B-roll: produtos, cadeira, espelho, detalhes</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-dot accent">5</div>
+          <div class="step-content">
+            <div class="step-title">Formulário de Aprovação de Entrega</div>
+            <div class="step-desc">Documento simples que o cliente assina (ou responde por WhatsApp) confirmando que aprovou o material final. Encerra o projeto oficialmente.</div>
+            <div class="field-item" style="margin-top:10px;">
+              "Confirmo que recebi e aprovei os vídeos referentes ao projeto [nome], entregues em [data]. Estou ciente que revisões adicionais serão cobradas separadamente."
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-dot accent">6</div>
+          <div class="step-content">
+            <div class="step-title">Relatório de Resultados (pós 30/60/90 dias)</div>
+            <div class="step-desc">Documento que você envia ao cliente mostrando o impacto do conteúdo. Serve para fidelizar, pedir depoimento e justificar novos projetos.</div>
+            <div class="checklist">
+              <div class="check-item">Dados do Instagram antes vs. depois</div>
+              <div class="check-item">Print dos melhores vídeos entregues</div>
+              <div class="check-item">Alcance e reproduções dos Reels</div>
+              <div class="check-item">Espaço para depoimento do cliente</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         03 WORKFLOW
+    ═══════════════════════════════════ -->
+    <section class="section" id="workflow">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2 class="section-title">Workflow por Projeto</h2>
+        <span class="section-tag">Operação</span>
+      </div>
+
+      <p>Cada projeto passa por 7 fases. Seguir esse fluxo elimina retrabalho, garante qualidade e faz o cliente sentir que está em boas mãos.</p>
+
+      <!-- FASE 1 -->
+      <div class="phase">
+        <div class="phase-num">1</div>
+        <div class="phase-title">Prospecção e Qualificação</div>
+        <div class="phase-timing">Antes de fechar</div>
+      </div>
+      <div class="checklist" style="padding: 0 0 0 16px;">
+        <div class="check-item">Cliente entra em contato (DM, WhatsApp, indicação)</div>
+        <div class="check-item">Responder em até 2 horas com mensagem padrão de boas-vindas</div>
+        <div class="check-item">Fazer 3 perguntas de qualificação: tipo de serviço, objetivo, tem Instagram ativo?</div>
+        <div class="check-item">Se qualificado → agendar call ou reunião presencial</div>
+        <div class="check-item">Na reunião: mostrar portfólio de salões, explicar o processo, apresentar pacotes</div>
+        <div class="check-item">Enviar proposta em até 24h após a reunião</div>
+      </div>
+
+      <div class="callout">
+        <strong>Mensagem padrão de boas-vindas:</strong><br>
+        "Oi [nome]! Que ótimo ter seu contato 🎬 Sou especializado em vídeos para salões de beleza — já ajudei diversos cabeleireiros a crescer no Instagram com conteúdo profissional. Me conta um pouco mais sobre seu salão e o que você quer comunicar?"
+      </div>
+
+      <!-- FASE 2 -->
+      <div class="phase">
+        <div class="phase-num">2</div>
+        <div class="phase-title">Briefing e Alinhamento</div>
+        <div class="phase-timing">Após fechar o projeto</div>
+      </div>
+      <div class="checklist" style="padding: 0 0 0 16px;">
+        <div class="check-item">Enviar o formulário de briefing (Google Forms)</div>
+        <div class="check-item">Aguardar preenchimento — não iniciar sem ele</div>
+        <div class="check-item">Analisar respostas e preparar perguntas de follow-up se necessário</div>
+        <div class="check-item">Fazer call de alinhamento de 30 min para confirmar tudo</div>
+        <div class="check-item">Definir data e horário de gravação</div>
+        <div class="check-item">Enviar contrato + cobrar 50% de sinal</div>
+        <div class="check-item">Criar pasta do projeto no Google Drive ou Notion</div>
+      </div>
+
+      <!-- FASE 3 -->
+      <div class="phase">
+        <div class="phase-num">3</div>
+        <div class="phase-title">Pré-produção</div>
+        <div class="phase-timing">3–5 dias antes</div>
+      </div>
+      <div class="checklist" style="padding: 0 0 0 16px;">
+        <div class="check-item">Montar o roteiro / lista de cenas com base no briefing</div>
+        <div class="check-item">Definir música de referência e estética visual</div>
+        <div class="check-item">Conferir equipamento: bateria, cartão, lentes, gimbal, microfone</div>
+        <div class="check-item">Confirmar com o cliente: horário, endereço, quem vai estar presente</div>
+        <div class="check-item">Pedir que o salão prepare: ambiente limpo, produtos organizados, cliente confirmado</div>
+        <div class="check-item">Chegar 30 min antes para avaliar a luz natural do local</div>
+      </div>
+
+      <!-- FASE 4 -->
+      <div class="phase">
+        <div class="phase-num">4</div>
+        <div class="phase-title">Gravação</div>
+        <div class="phase-timing">Dia D</div>
+      </div>
+      <div class="checklist" style="padding: 0 0 0 16px;">
+        <div class="check-item">Foto "antes" do cliente (com consentimento)</div>
+        <div class="check-item">Seguir o checklist de produção (seção 02)</div>
+        <div class="check-item">Capturar pelo menos 3x mais material do que vai usar</div>
+        <div class="check-item">Gravar depoimento do cliente ao final (30–60 seg)</div>
+        <div class="check-item">Foto "depois" + vídeo da transformação</div>
+        <div class="check-item">Fazer backup imediato no celular ou HD externo antes de sair</div>
+        <div class="check-item">Combinar previsão de entrega com o cliente antes de ir embora</div>
+      </div>
+
+      <!-- FASE 5 -->
+      <div class="phase">
+        <div class="phase-num">5</div>
+        <div class="phase-title">Edição e Pós-produção</div>
+        <div class="phase-timing">3–7 dias</div>
+      </div>
+      <div class="checklist" style="padding: 0 0 0 16px;">
+        <div class="check-item">Organizar material em pastas: Brutos / Selecionados / Música / Exportados</div>
+        <div class="check-item">Selecionar os melhores takes (não editar tudo)</div>
+        <div class="check-item">Montar primeiro corte seguindo o ritmo da música</div>
+        <div class="check-item">Aplicar correção de cor (LUT ou preset consistente)</div>
+        <div class="check-item">Adicionar texto, logo do salão e chamada para ação</div>
+        <div class="check-item">Exportar em formato correto: Reels (9:16), Feed (1:1 ou 4:5), Stories (9:16)</div>
+        <div class="check-item">Subir no Google Drive / WeTransfer e enviar o link</div>
+      </div>
+
+      <!-- FASE 6 -->
+      <div class="phase">
+        <div class="phase-num">6</div>
+        <div class="phase-title">Entrega e Revisão</div>
+        <div class="phase-timing">1–3 dias</div>
+      </div>
+      <div class="checklist" style="padding: 0 0 0 16px;">
+        <div class="check-item">Enviar material com contexto: "aqui está o Reel principal + 2 stories + 1 vídeo de feed"</div>
+        <div class="check-item">Dar até 48h para o cliente dar feedback</div>
+        <div class="check-item">Aplicar revisões (máximo 2 rodadas inclusas no contrato)</div>
+        <div class="check-item">Entrega final → pedir formulário de aprovação</div>
+        <div class="check-item">Cobrar os 50% restantes</div>
+        <div class="check-item">Pedir autorização para usar o material no seu portfólio</div>
+      </div>
+
+      <!-- FASE 7 -->
+      <div class="phase">
+        <div class="phase-num">7</div>
+        <div class="phase-title">Pós-venda e Relacionamento</div>
+        <div class="phase-timing">30 / 60 / 90 dias</div>
+      </div>
+      <div class="checklist" style="padding: 0 0 0 16px;">
+        <div class="check-item">Aos 7 dias: perguntar como foi a recepção do público</div>
+        <div class="check-item">Aos 30 dias: pedir print dos resultados (alcance, novos seguidores, agendamentos)</div>
+        <div class="check-item">Aos 30 dias: pedir depoimento em vídeo ou texto</div>
+        <div class="check-item">Aos 60 dias: enviar relatório de resultados montado por você</div>
+        <div class="check-item">Aos 90 dias: apresentar proposta de continuidade ou pacote mensal</div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         04 BRIEFING
+    ═══════════════════════════════════ -->
+    <section class="section" id="briefing">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2 class="section-title">Briefing Completo</h2>
+        <span class="section-tag">Template</span>
+      </div>
+
+      <p>Use este template como base para montar seu formulário (Google Forms, Notion ou PDF). Cada pergunta existe por uma razão — não pule nenhuma.</p>
+
+      <!-- BLOCO A -->
+      <div class="card">
+        <div class="card-subtitle">Bloco A</div>
+        <div class="card-title">Sobre o Salão</div>
+        <div class="field-group">
+          <div class="field-label">Identidade</div>
+          <div class="field-item"><strong>Nome do salão e do responsável</strong></div>
+          <div class="field-item"><strong>Há quanto tempo está no mercado?</strong></div>
+          <div class="field-item"><strong>Qual o serviço principal (o carro-chefe)?</strong><br>Ex: coloração, progressiva, corte masculino, tranças…</div>
+          <div class="field-item"><strong>Qual a faixa de preço média dos serviços?</strong><br>Ajuda a calibrar a linguagem visual do vídeo.</div>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Presença Digital</div>
+          <div class="field-item"><strong>@ do Instagram do salão</strong></div>
+          <div class="field-item"><strong>Quantos seguidores tem hoje?</strong></div>
+          <div class="field-item"><strong>Posta com frequência? Que tipo de conteúdo?</strong></div>
+          <div class="field-item"><strong>Já usou vídeo profissional antes? Se sim, o que achou?</strong></div>
+        </div>
+      </div>
+
+      <!-- BLOCO B -->
+      <div class="card">
+        <div class="card-subtitle">Bloco B</div>
+        <div class="card-title">Sobre o Cliente Ideal do Salão</div>
+        <div class="field-group">
+          <div class="field-item"><strong>Quem é o cliente ideal?</strong><br>Gênero, faixa etária, perfil de consumo</div>
+          <div class="field-item"><strong>O que esse cliente busca ao procurar um salão?</strong><br>Preço, qualidade, experiência, praticidade…</div>
+          <div class="field-item"><strong>Que sensação o cliente deve ter ao assistir o vídeo?</strong><br>Ex: "quero marcar agora", "esse salão parece sofisticado", "parece acessível"</div>
+        </div>
+      </div>
+
+      <!-- BLOCO C -->
+      <div class="card">
+        <div class="card-subtitle">Bloco C</div>
+        <div class="card-title">Objetivos com o Vídeo</div>
+        <div class="field-group">
+          <div class="field-item"><strong>Qual o objetivo principal do conteúdo?</strong><br>[ ] Atrair novos clientes &nbsp;&nbsp; [ ] Mostrar resultado de serviço &nbsp;&nbsp; [ ] Aumentar seguidores &nbsp;&nbsp; [ ] Construir autoridade &nbsp;&nbsp; [ ] Outro: ___</div>
+          <div class="field-item"><strong>Onde o vídeo vai ser usado?</strong><br>[ ] Reels &nbsp;&nbsp; [ ] Stories &nbsp;&nbsp; [ ] TikTok &nbsp;&nbsp; [ ] Site &nbsp;&nbsp; [ ] WhatsApp &nbsp;&nbsp; [ ] Todos</div>
+          <div class="field-item"><strong>Tem alguma chamada para ação específica?</strong><br>Ex: "Clique no link da bio", "Manda mensagem", "Agende pelo WhatsApp"</div>
+          <div class="field-item"><strong>Tem data de publicação prevista?</strong></div>
+        </div>
+      </div>
+
+      <!-- BLOCO D -->
+      <div class="card">
+        <div class="card-subtitle">Bloco D</div>
+        <div class="card-title">Estética e Referências</div>
+        <div class="field-group">
+          <div class="field-item"><strong>Envie 3–5 vídeos ou perfis de referência que você admira</strong><br>Pode ser de outros salões, marcas ou estilos visuais</div>
+          <div class="field-item"><strong>Como você descreveria a personalidade da sua marca?</strong><br>Ex: sofisticada, descolada, acolhedora, premium, moderna, artesanal…</div>
+          <div class="field-item"><strong>Cores que representam o salão?</strong><br>Se tiver identidade visual, compartilhar aqui</div>
+          <div class="field-item"><strong>Prefere música mais agitada ou suave?</strong><br>Referências de músicas ou artistas ajudam</div>
+          <div class="field-item"><strong>Prefere vídeo com ou sem texto em cima?</strong></div>
+          <div class="field-item"><strong>Tem logo? Em PNG com fundo transparente?</strong></div>
+        </div>
+      </div>
+
+      <!-- BLOCO E -->
+      <div class="card">
+        <div class="card-subtitle">Bloco E</div>
+        <div class="card-title">Logística da Gravação</div>
+        <div class="field-group">
+          <div class="field-item"><strong>Endereço completo do salão</strong></div>
+          <div class="field-item"><strong>Melhores dias e horários para gravar?</strong><br>Considerar luz natural (manhã costuma ser melhor)</div>
+          <div class="field-item"><strong>Quantos profissionais vão aparecer no vídeo?</strong></div>
+          <div class="field-item"><strong>Vai ter cliente real sendo atendido ou simulação?</strong><br>Cliente real: combinar autorização de imagem</div>
+          <div class="field-item"><strong>O salão tem estacionamento / fácil acesso?</strong></div>
+          <div class="field-item"><strong>Tem tomada disponível para recarregar equipamento?</strong></div>
+        </div>
+      </div>
+
+      <!-- BLOCO F -->
+      <div class="card">
+        <div class="card-subtitle">Bloco F</div>
+        <div class="card-title">Autorização e Termos</div>
+        <div class="field-group">
+          <div class="field-item"><strong>[ ] Autorizo o uso da minha imagem e do salão no portfólio do videomaker</strong></div>
+          <div class="field-item"><strong>[ ] Confirmo que li e concordo com os termos do contrato</strong></div>
+          <div class="field-item"><strong>[ ] Todos os clientes/modelos que aparecerem assinarão autorização de imagem</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         05 MÉTRICAS
+    ═══════════════════════════════════ -->
+    <section class="section" id="metricas">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2 class="section-title">Métricas de Crescimento</h2>
+        <span class="section-tag">Dados</span>
+      </div>
+
+      <p>Você precisa medir duas coisas: o crescimento do <strong>cliente</strong> (prova do seu trabalho) e o crescimento do <strong>seu negócio</strong>. Colete dados <em>antes</em> de qualquer projeto — sem isso, não tem comparação.</p>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-subtitle">Para cada cliente — coletar no DIA DA ASSINATURA</div>
+        <div class="card-title">Dados de Baseline do Salão</div>
+        <table class="metric-table">
+          <tr>
+            <th>Métrica</th>
+            <th>O que capturar</th>
+            <th>Onde ver</th>
+            <th>Tipo</th>
+          </tr>
+          <tr>
+            <td>Seguidores</td>
+            <td>Número exato + print</td>
+            <td>Instagram</td>
+            <td><span class="badge badge-green">Crescimento</span></td>
+          </tr>
+          <tr>
+            <td>Alcance mensal</td>
+            <td>Contas alcançadas nos últimos 30 dias</td>
+            <td>Instagram Insights</td>
+            <td><span class="badge badge-green">Crescimento</span></td>
+          </tr>
+          <tr>
+            <td>Reproduções de Reel</td>
+            <td>Média dos últimos 5 Reels</td>
+            <td>Instagram Insights</td>
+            <td><span class="badge badge-blue">Engajamento</span></td>
+          </tr>
+          <tr>
+            <td>Taxa de engajamento</td>
+            <td>Likes + comentários / seguidores × 100</td>
+            <td>Manual</td>
+            <td><span class="badge badge-blue">Engajamento</span></td>
+          </tr>
+          <tr>
+            <td>Visitas ao perfil</td>
+            <td>Visitas nos últimos 30 dias</td>
+            <td>Instagram Insights</td>
+            <td><span class="badge badge-green">Crescimento</span></td>
+          </tr>
+          <tr>
+            <td>Cliques no link</td>
+            <td>Cliques na bio nos últimos 30 dias</td>
+            <td>Instagram Insights</td>
+            <td><span class="badge badge-accent">Conversão</span></td>
+          </tr>
+          <tr>
+            <td>Agendamentos (se possível)</td>
+            <td>Média de clientes/semana antes do projeto</td>
+            <td>Dono do salão</td>
+            <td><span class="badge badge-accent">Conversão</span></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout">
+        <strong>Quando medir novamente:</strong> 30 dias após a publicação dos vídeos. Depois 60 e 90 dias. Coloque esses dados em um relatório simples e envie ao cliente — isso abre porta para renovação de contrato.
+      </div>
+
+      <hr class="divider">
+
+      <div class="card">
+        <div class="card-subtitle">Para o seu negócio — registrar mensalmente</div>
+        <div class="card-title">Métricas do Seu Negócio como Videomaker</div>
+        <table class="metric-table">
+          <tr>
+            <th>Métrica</th>
+            <th>O que medir</th>
+            <th>Meta inicial</th>
+          </tr>
+          <tr>
+            <td>Clientes/mês</td>
+            <td>Quantos salões você atendeu</td>
+            <td>2–3/mês</td>
+          </tr>
+          <tr>
+            <td>Ticket médio</td>
+            <td>Receita total ÷ nº de clientes</td>
+            <td>Aumentar 10%/trimestre</td>
+          </tr>
+          <tr>
+            <td>Receita total</td>
+            <td>Soma de todos os projetos no mês</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Taxa de retorno</td>
+            <td>Clientes que voltaram para novo projeto</td>
+            <td>>40%</td>
+          </tr>
+          <tr>
+            <td>Origem dos leads</td>
+            <td>Instagram / Indicação / WhatsApp / Outro</td>
+            <td>Identificar o canal que mais traz</td>
+          </tr>
+          <tr>
+            <td>Taxa de conversão</td>
+            <td>Propostas enviadas ÷ projetos fechados</td>
+            <td>>50%</td>
+          </tr>
+          <tr>
+            <td>Seguidores no Instagram</td>
+            <td>Crescimento do seu perfil</td>
+            <td>+100/mês</td>
+          </tr>
+          <tr>
+            <td>Portfólio de salões</td>
+            <td>Nº de cases documentados</td>
+            <td>+1 novo/mês</td>
+          </tr>
+          <tr>
+            <td>Depoimentos coletados</td>
+            <td>Acumulativo</td>
+            <td>1 por projeto</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         06 CALENDÁRIO DE CONTEÚDO
+    ═══════════════════════════════════ -->
+    <section class="section" id="conteudo">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2 class="section-title">Calendário de Conteúdo</h2>
+        <span class="section-tag">Crescimento</span>
+      </div>
+
+      <p>Este é o ritmo mínimo para construir autoridade. Você não precisa postar todo dia — precisa ser consistente com o que postou.</p>
+
+      <div class="card" style="margin-bottom:24px;">
+        <div class="card-title">Frequência por formato</div>
+        <table class="metric-table">
+          <tr>
+            <th>Formato</th>
+            <th>Frequência</th>
+            <th>Objetivo</th>
+            <th>Exemplo de conteúdo</th>
+          </tr>
+          <tr>
+            <td>Reel (resultado)</td>
+            <td>2×/semana</td>
+            <td>Prova social</td>
+            <td>Transformação de cliente do salão</td>
+          </tr>
+          <tr>
+            <td>Reel (educativo)</td>
+            <td>1×/semana</td>
+            <td>Autoridade</td>
+            <td>"3 erros de cabeleireiros no Instagram"</td>
+          </tr>
+          <tr>
+            <td>Carrossel</td>
+            <td>1×/semana</td>
+            <td>Alcance orgânico</td>
+            <td>"O que filmar no salão quando não tem cliente"</td>
+          </tr>
+          <tr>
+            <td>Stories</td>
+            <td>Diário (3–5)</td>
+            <td>Proximidade</td>
+            <td>Bastidores, enquetes, dicas rápidas</td>
+          </tr>
+          <tr>
+            <td>YouTube / vídeo longo</td>
+            <td>1×/mês</td>
+            <td>SEO + credibilidade</td>
+            <td>"Como gravei um Reel que viralizou pra cabeleireira X"</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Template — Semana tipo</div>
+        <div style="overflow-x:auto; padding-bottom:8px;">
+          <div class="cal-row">
+            <div class="cal-header">—</div>
+            <div class="cal-header">Seg</div>
+            <div class="cal-header">Ter</div>
+            <div class="cal-header">Qua</div>
+            <div class="cal-header">Qui</div>
+            <div class="cal-header hide-mobile">Sex</div>
+            <div class="cal-header hide-mobile">Sáb</div>
+            <div class="cal-header hide-mobile">Dom</div>
+          </div>
+          <div class="cal-row">
+            <div class="cal-week">Feed</div>
+            <div class="cal-cell accent-cell">Reel resultado do salão</div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell filled">Carrossel educativo</div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell accent-cell hide-mobile">Reel educativo / bastidores</div>
+            <div class="cal-cell hide-mobile"></div>
+            <div class="cal-cell hide-mobile"></div>
+          </div>
+          <div class="cal-row">
+            <div class="cal-week">Stories</div>
+            <div class="cal-cell filled">Bastidores de edição</div>
+            <div class="cal-cell filled">Enquete sobre o nicho</div>
+            <div class="cal-cell filled">Dica rápida em 15s</div>
+            <div class="cal-cell filled">Processo de gravação</div>
+            <div class="cal-cell filled hide-mobile">Resultado do cliente</div>
+            <div class="cal-cell filled hide-mobile">Repost de cliente</div>
+            <div class="cal-cell hide-mobile"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <div class="card-title">30 ideias de conteúdo para videomaker de salão</div>
+        <div class="grid-2" style="margin-top:4px;">
+          <div class="checklist">
+            <div class="check-item">Antes e depois de perfil de salão no Instagram</div>
+            <div class="check-item">O que filmar no salão em 2h</div>
+            <div class="check-item">3 tipos de vídeo que todo salão precisa ter</div>
+            <div class="check-item">Por que foto já não basta para cabeleireiro</div>
+            <div class="check-item">Bastidores da minha gravação em salão</div>
+            <div class="check-item">Quanto custa não ter vídeo profissional</div>
+            <div class="check-item">Como mostrar técnica de cabelo em vídeo</div>
+            <div class="check-item">O erro mais comum de cabeleireiro no Reels</div>
+            <div class="check-item">Como filmar transformação de cor</div>
+            <div class="check-item">Como gravar depoimento de cliente sem parecer forçado</div>
+            <div class="check-item">Case: crescimento do @nomesalão com vídeo</div>
+            <div class="check-item">Equipamento que uso para filmar em salão</div>
+            <div class="check-item">Por que salão com vídeo cobra mais caro</div>
+            <div class="check-item">Tendências de conteúdo para beleza em 2025</div>
+            <div class="check-item">Como a luz do salão afeta a qualidade do vídeo</div>
+          </div>
+          <div class="checklist">
+            <div class="check-item">O que o cliente decide antes de entrar no salão</div>
+            <div class="check-item">Reels que mais performam para cabeleireiros</div>
+            <div class="check-item">Como usar o before/after corretamente</div>
+            <div class="check-item">Sons e músicas que funcionam para salão</div>
+            <div class="check-item">Como usar Stories para lotar a agenda</div>
+            <div class="check-item">3 coisas que aprendi gravando em salões</div>
+            <div class="check-item">Diferença entre vídeo amador e profissional</div>
+            <div class="check-item">Por que você deve mostrar o processo, não só o resultado</div>
+            <div class="check-item">Como montar um mini-estúdio dentro do salão</div>
+            <div class="check-item">Salão premium vs salão popular: como comunicar cada um</div>
+            <div class="check-item">Cabeleireiro que mais cresce no Instagram — o que tem em comum</div>
+            <div class="check-item">Como pedir depoimento de cliente sem ser chato</div>
+            <div class="check-item">Minha rotina de trabalho como videomaker de salão</div>
+            <div class="check-item">Como preparar o salão antes da gravação</div>
+            <div class="check-item">O poder do b-roll: detalhes que ninguém grava (mas deveria)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         07 PORTFÓLIO E PROVAS
+    ═══════════════════════════════════ -->
+    <section class="section" id="portfolio">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <h2 class="section-title">Portfólio e Provas Sociais</h2>
+        <span class="section-tag">Crescimento</span>
+      </div>
+
+      <p>Prova social é o que fecha contratos. Cada projeto concluído deve gerar pelo menos um ativo de prova para o seu portfólio.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-subtitle">Para cada projeto</div>
+          <div class="card-title">O que documentar</div>
+          <div class="checklist">
+            <div class="check-item">Print do Instagram do salão: antes vs. depois</div>
+            <div class="check-item">Screenshot do Reel com mais views</div>
+            <div class="check-item">Depoimento do cabeleireiro (texto ou vídeo)</div>
+            <div class="check-item">Número de novos seguidores no mês</div>
+            <div class="check-item">Comentários positivos de clientes do salão</div>
+            <div class="check-item">Alcance e reproduções dos vídeos entregues</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-subtitle">Onde publicar</div>
+          <div class="card-title">Distribuição das provas</div>
+          <div class="checklist">
+            <div class="check-item">Reel mostrando o case no seu Instagram</div>
+            <div class="check-item">Highlight "Resultados" no seu perfil</div>
+            <div class="check-item">Stories com depoimento do cliente</div>
+            <div class="check-item">Seção "Cases" no seu site ou link da bio</div>
+            <div class="check-item">Proposta comercial (inserir cases relevantes)</div>
+            <div class="check-item">Mensagem de prospecção (mostrar resultado real)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Template de depoimento — pedir ao cliente:</strong><br>
+        "Me conta: antes de trabalharmos juntos, como era seu Instagram? E depois dos vídeos, o que mudou — nas visualizações, nos agendamentos ou na percepção dos seus clientes?"
+      </div>
+
+      <div class="card">
+        <div class="card-title">Estrutura do Case para o seu portfólio</div>
+        <div class="steps" style="margin-top:8px;">
+          <div class="step">
+            <div class="step-dot green">1</div>
+            <div class="step-content">
+              <div class="step-title">Contexto</div>
+              <div class="step-desc">Quem é o salão, qual era o desafio e o que eles queriam comunicar</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-dot green">2</div>
+            <div class="step-content">
+              <div class="step-title">O que foi produzido</div>
+              <div class="step-desc">Quais vídeos, formatos, duração de produção</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-dot green">3</div>
+            <div class="step-content">
+              <div class="step-title">Resultados em números</div>
+              <div class="step-desc">+X seguidores / +X% de alcance / vídeo com X reproduções</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-dot green">4</div>
+            <div class="step-content">
+              <div class="step-title">Depoimento do cliente</div>
+              <div class="step-desc">Em vídeo (ideal) ou texto com nome e foto do salão</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         08 CHECKLIST GERAL
+    ═══════════════════════════════════ -->
+    <section class="section" id="checklist">
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <h2 class="section-title">Checklist Geral — Por onde começar</h2>
+        <span class="section-tag">Referência</span>
+      </div>
+
+      <p>Se você está começando agora, faça nesta ordem. Não pule etapas.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-subtitle">Semana 1</div>
+          <div class="card-title">Fundação</div>
+          <div class="checklist">
+            <div class="check-item">Definir a frase de posicionamento</div>
+            <div class="check-item">Atualizar bio do Instagram com foco em salões</div>
+            <div class="check-item">Criar o formulário de briefing (Google Forms)</div>
+            <div class="check-item">Montar o template de proposta comercial</div>
+            <div class="check-item">Ter um modelo de contrato básico</div>
+            <div class="check-item">Criar pasta padrão de projeto no Drive</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-subtitle">Semana 2</div>
+          <div class="card-title">Primeiro case</div>
+          <div class="checklist">
+            <div class="check-item">Identificar 1 cabeleireiro para parceria (pode ser gratuito)</div>
+            <div class="check-item">Aplicar o workflow completo nesse projeto</div>
+            <div class="check-item">Coletar dados antes da gravação</div>
+            <div class="check-item">Gravar, editar e entregar com excelência</div>
+            <div class="check-item">Coletar depoimento e métricas 30 dias depois</div>
+            <div class="check-item">Publicar o case no seu Instagram</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-subtitle">Mês 1–2</div>
+          <div class="card-title">Conteúdo e Consistência</div>
+          <div class="checklist">
+            <div class="check-item">Postar 3–4x/semana no Instagram</div>
+            <div class="check-item">Criar highlights: Resultados / Processo / Sobre</div>
+            <div class="check-item">Gravar 1 Reel educativo por semana</div>
+            <div class="check-item">Registrar métricas do seu negócio mensalmente</div>
+            <div class="check-item">Prospectar ativamente 5 salões/semana</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-subtitle">Mês 3+</div>
+          <div class="card-title">Escala e Pacotes</div>
+          <div class="checklist">
+            <div class="check-item">Criar pacotes mensais (recorrência)</div>
+            <div class="check-item">Aumentar ticket médio com base nos resultados</div>
+            <div class="check-item">Ter pelo menos 3 cases documentados</div>
+            <div class="check-item">Criar um depoimento em vídeo de cliente</div>
+            <div class="check-item">Avaliar se há demanda para criar curso ou mentoria</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Lembre-se:</strong> O objetivo é ser conhecido como <em>"o videomaker dos cabeleireiros"</em>. Cada post, cada projeto, cada conversa deve reforçar isso. Consistência de nicho é mais poderosa do que qualidade técnica sozinha.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Highlight active nav on scroll
+  const sections = document.querySelectorAll('.section');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
