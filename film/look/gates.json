@@ -1,0 +1,33 @@
+{
+ "film": "film/draft.mp4",
+ "duration": 30.0,
+ "fps": 30.0,
+ "gates": [
+  {
+   "id": "G0",
+   "name": "render exists",
+   "status": "PASS",
+   "detail": "duration 30.00 s matches --expect 30.00 s; audio none (not required)"
+  },
+  {
+   "id": "G2",
+   "name": "no empty frame",
+   "status": "PASS",
+   "detail": "no run of > 3 flat frames; 6 short dip(s) ignored: 0.00s, 3.00s, 9.00s, 17.00s, 21.10s, 28.60s"
+  },
+  {
+   "id": "G3",
+   "name": "end card hold, CTA share",
+   "status": "PASS",
+   "detail": "end hold 1.17 s (0.6-1.4); final shot 1.40 s = 5 % of the film (<= 25 %)"
+  }
+ ],
+ "motion_mean_luma_diff": 0.24,
+ "human_band": {
+  "median": 6.8,
+  "q1": 4.4,
+  "q3": 9.8
+ },
+ "audio": null,
+ "loudness": null
+}
