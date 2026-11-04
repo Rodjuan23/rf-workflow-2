@@ -137,7 +137,7 @@ let browser, ff;
 const cleanup = async () => { try { await browser?.close(); } catch {} };
 
 (async () => {
-  browser = await launchChrome({ args: ['--allow-file-access-from-files'] });
+  browser = await launchChrome({ args: ['--allow-file-access-from-files', '--no-sandbox', '--disable-setuid-sandbox'] });
   // Probe size with a first load at 1920x1080 only if user gave none and page declares data-width/height.
   let W = opt.width ? num(opt.width, 0, 'width') : null, H = opt.height ? num(opt.height, 0, 'height') : null;
   const page = await browser.newPage({ width: W || 1920, height: H || 1080, scale });

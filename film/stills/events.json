@@ -1,0 +1,242 @@
+[
+ {
+  "t": 0.0667,
+  "frame": 2,
+  "type": "enter",
+  "label": "#title"
+ },
+ {
+  "t": 1.0667,
+  "frame": 32,
+  "type": "enter",
+  "label": "#sub1"
+ },
+ {
+  "t": 3,
+  "frame": 90,
+  "type": "cut",
+  "label": "hide #s1 show #s2"
+ },
+ {
+  "t": 3,
+  "frame": 90,
+  "type": "enter",
+  "label": "#line-num"
+ },
+ {
+  "t": 3,
+  "frame": 90,
+  "type": "enter",
+  "label": "#code-accent"
+ },
+ {
+  "t": 3,
+  "frame": 90,
+  "type": "enter",
+  "label": "#fname"
+ },
+ {
+  "t": 3.2,
+  "frame": 96,
+  "type": "type",
+  "label": "start"
+ },
+ {
+  "t": 9,
+  "frame": 270,
+  "type": "cut",
+  "label": "hide #s2 show #s3a"
+ },
+ {
+  "t": 9.0667,
+  "frame": 272,
+  "type": "enter",
+  "label": "#gsvg"
+ },
+ {
+  "t": 9.7333,
+  "frame": 292,
+  "type": "enter",
+  "label": "#glabel"
+ },
+ {
+  "t": 13,
+  "frame": 390,
+  "type": "cut",
+  "label": "hide #s3a show #s3b"
+ },
+ {
+  "t": 13.0667,
+  "frame": 392,
+  "type": "enter",
+  "label": "#slabel"
+ },
+ {
+  "t": 13.3333,
+  "frame": 400,
+  "type": "count",
+  "label": "start 0"
+ },
+ {
+  "t": 13.4667,
+  "frame": 404,
+  "type": "enter",
+  "label": "#sunit"
+ },
+ {
+  "t": 15.1667,
+  "frame": 455,
+  "type": "count",
+  "label": "land 42"
+ },
+ {
+  "t": 16.9333,
+  "frame": 508,
+  "type": "type",
+  "label": "end"
+ },
+ {
+  "t": 17,
+  "frame": 510,
+  "type": "cut",
+  "label": "hide #s3b show #s3c"
+ },
+ {
+  "t": 17.0667,
+  "frame": 512,
+  "type": "enter",
+  "label": "#chksvg"
+ },
+ {
+  "t": 18.2667,
+  "frame": 548,
+  "type": "enter",
+  "label": "MISSÃO"
+ },
+ {
+  "t": 18.2667,
+  "frame": 548,
+  "type": "word",
+  "label": "MISSÃO"
+ },
+ {
+  "t": 18.4667,
+  "frame": 554,
+  "type": "enter",
+  "label": "CONCLUÍDA"
+ },
+ {
+  "t": 18.4667,
+  "frame": 554,
+  "type": "word",
+  "label": "CONCLUÍDA"
+ },
+ {
+  "t": 18.8667,
+  "frame": 566,
+  "type": "enter",
+  "label": "#msub"
+ },
+ {
+  "t": 21.1,
+  "frame": 633,
+  "type": "cut",
+  "label": "hide #s3c show #s4"
+ },
+ {
+  "t": 21.1,
+  "frame": 633,
+  "type": "enter",
+  "label": "#ceyebrow"
+ },
+ {
+  "t": 21.6667,
+  "frame": 650,
+  "type": "enter",
+  "label": "Aprenda"
+ },
+ {
+  "t": 21.6667,
+  "frame": 650,
+  "type": "word",
+  "label": "Aprenda"
+ },
+ {
+  "t": 21.8333,
+  "frame": 655,
+  "type": "enter",
+  "label": "a"
+ },
+ {
+  "t": 21.8333,
+  "frame": 655,
+  "type": "word",
+  "label": "a"
+ },
+ {
+  "t": 22,
+  "frame": 660,
+  "type": "enter",
+  "label": "construir"
+ },
+ {
+  "t": 22,
+  "frame": 660,
+  "type": "word",
+  "label": "construir"
+ },
+ {
+  "t": 22.4,
+  "frame": 672,
+  "type": "enter",
+  "label": "o"
+ },
+ {
+  "t": 22.4,
+  "frame": 672,
+  "type": "word",
+  "label": "o"
+ },
+ {
+  "t": 22.5667,
+  "frame": 677,
+  "type": "enter",
+  "label": "futuro"
+ },
+ {
+  "t": 22.5667,
+  "frame": 677,
+  "type": "word",
+  "label": "futuro"
+ },
+ {
+  "t": 22.9333,
+  "frame": 688,
+  "type": "enter",
+  "label": "#csub"
+ },
+ {
+  "t": 23.6,
+  "frame": 708,
+  "type": "enter",
+  "label": "#cbtn"
+ },
+ {
+  "t": 28.6,
+  "frame": 858,
+  "type": "cut",
+  "label": "hide #s4 show #s5"
+ },
+ {
+  "t": 28.6,
+  "frame": 858,
+  "type": "enter",
+  "label": "#elogo"
+ },
+ {
+  "t": 29.1333,
+  "frame": 874,
+  "type": "enter",
+  "label": "#etag"
+ }
+]

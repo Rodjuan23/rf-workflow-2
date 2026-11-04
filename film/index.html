@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Colégio Vivare · Robótica</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="./runtime/fonts.css">
+<style>
+:root {
+  --ground: #080C14;
+  --ink: #E8F4FF;
+  --ink-soft: #7BA8C4;
+  --accent: #00D4FF;
+  --font: "Inter", system-ui, sans-serif;
+  --b: 0px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main {
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden;
+  background: var(--ground); color: var(--ink); font-family: var(--font); font-weight: 500;
+  filter: blur(var(--b));
+}
+.scene { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div id="main">
+
+<!-- ═══ BEAT 1: HOOK — circuitos + título (0–90f / 3s) ═══ -->
+<section id="s1" class="scene" style="background:#080C14">
+  <svg style="position:absolute;inset:0;width:1920px;height:1080px;" viewBox="0 0 1920 1080">
+    <path id="c1" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity="0.35"
+          d="M0,380 L320,380 L320,180 L620,180"
+          stroke-dasharray="800" stroke-dashoffset="800"/>
+    <path id="c2" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity="0.35"
+          d="M1920,700 L1580,700 L1580,900 L1280,900"
+          stroke-dasharray="800" stroke-dashoffset="800"/>
+    <path id="c3" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity="0.25"
+          d="M960,0 L960,220 L1220,220 L1220,420"
+          stroke-dasharray="600" stroke-dashoffset="600"/>
+    <path id="c4" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity="0.25"
+          d="M0,700 L380,700 L380,560 L680,560"
+          stroke-dasharray="700" stroke-dashoffset="700"/>
+    <path id="c5" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity="0.25"
+          d="M1920,280 L1680,280 L1680,520 L1480,520"
+          stroke-dasharray="700" stroke-dashoffset="700"/>
+    <circle id="cn1" fill="#00D4FF" cx="320" cy="180" r="5" opacity="0"/>
+    <circle id="cn2" fill="#00D4FF" cx="1580" cy="900" r="5" opacity="0"/>
+    <circle id="cn3" fill="#00D4FF" cx="1220" cy="420" r="5" opacity="0"/>
+  </svg>
+  <div id="title"
+       style="position:absolute;left:0;top:350px;width:1920px;text-align:center;
+              font-size:188px;font-weight:700;letter-spacing:0.07em;line-height:1;white-space:pre">VIV<span style="color:#00D4FF">A</span>RE</div>
+  <div id="sub1"
+       style="position:absolute;left:0;top:570px;width:1920px;text-align:center;
+              font-size:32px;letter-spacing:0.38em;color:#7BA8C4;text-transform:uppercase;white-space:pre">COLÉGIO VIVARE · ROBÓTICA 2025</div>
+  <div id="glow-line"
+       style="position:absolute;left:760px;top:598px;width:400px;height:2px;
+              background:#00D4FF;box-shadow:0 0 14px #00D4FF;border-radius:1px;
+              transform-origin:left center;"></div>
+</section>
+
+<!-- ═══ BEAT 2: CÓDIGO (90–270f / 6s) ═══ -->
+<section id="s2" class="scene" style="background:#060A12">
+  <div id="line-num"
+       style="position:absolute;left:400px;top:220px;
+              font-size:40px;line-height:68px;font-family:ui-monospace,monospace;
+              color:#2A4860;white-space:pre;text-align:right;">1
+2
+3
+4
+5
+6
+7</div>
+  <div id="code-accent"
+       style="position:absolute;left:454px;top:220px;
+              width:2px;height:476px;background:rgba(0,212,255,0.22);"></div>
+  <div id="code"
+       style="position:absolute;left:480px;top:220px;
+              font-size:40px;line-height:68px;font-family:ui-monospace,'Courier New',monospace;
+              color:#C8D8E8;white-space:pre"><span style="color:#00D4FF">import</span> <span style="color:#A8D4FF">robot</span>
+<span style="color:#00D4FF">from</span> <span style="color:#A8D4FF">robot</span> <span style="color:#00D4FF">import</span> <span style="color:#E8C87A">Motor</span>, <span style="color:#E8C87A">Sensor</span>
+
+<span style="color:#A8D4FF">motor</span> = <span style="color:#E8C87A">Motor</span>(<span style="color:#A8D4FF">pin</span>=<span style="color:#F5A28A">3</span>)
+<span style="color:#A8D4FF">sensor</span> = <span style="color:#E8C87A">Sensor</span>(<span style="color:#A8D4FF">pin</span>=<span style="color:#F5A28A">5</span>)
+
+<span style="color:#A8D4FF">motor</span>.<span style="color:#E8C87A">speed</span>(<span style="color:#F5A28A">100</span>)</div>
+  <div id="caret"
+       style="position:absolute;left:480px;top:220px;
+              width:4px;height:44px;background:#00D4FF;border-radius:1px;"></div>
+  <div id="fname"
+       style="position:absolute;left:480px;top:730px;
+              font-size:26px;color:#2A4860;letter-spacing:0.2em;white-space:pre">robot_control.py</div>
+</section>
+
+<!-- ═══ BEAT 3a: ENGRENAGENS (270–390f / 4s) ═══ -->
+<section id="s3a" class="scene" style="background:#060A12">
+  <svg id="gsvg" viewBox="0 0 800 800"
+       style="position:absolute;left:560px;top:140px;width:800px;height:800px;">
+    <g id="gbig" transform="translate(300,400)">
+      <circle r="180" fill="none" stroke="#00D4FF" stroke-width="10" opacity="0.25"/>
+      <circle r="142" fill="#0C1620" stroke="#00D4FF" stroke-width="7" opacity="0.55"/>
+      <circle r="28" fill="#00D4FF" opacity="0.9"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(30)"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(60)"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(90)"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(120)"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(150)"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(180)"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(210)"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(240)"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(270)"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(300)"/>
+      <polygon points="-18,-152 18,-152 22,-184 -22,-184" fill="#00D4FF" opacity="0.65" transform="rotate(330)"/>
+      <line x1="0" y1="-118" x2="0" y2="118" stroke="#00D4FF" stroke-width="5" opacity="0.35"/>
+      <line x1="-118" y1="0" x2="118" y2="0" stroke="#00D4FF" stroke-width="5" opacity="0.35"/>
+      <line x1="-84" y1="-84" x2="84" y2="84" stroke="#00D4FF" stroke-width="3" opacity="0.25"/>
+      <line x1="84" y1="-84" x2="-84" y2="84" stroke="#00D4FF" stroke-width="3" opacity="0.25"/>
+    </g>
+    <g id="gsmall" transform="translate(558,308)">
+      <circle r="98" fill="none" stroke="#E8C87A" stroke-width="7" opacity="0.3"/>
+      <circle r="76" fill="#0C1620" stroke="#E8C87A" stroke-width="5" opacity="0.55"/>
+      <circle r="17" fill="#E8C87A" opacity="0.9"/>
+      <polygon points="-13,-82 13,-82 16,-102 -16,-102" fill="#E8C87A" opacity="0.65"/>
+      <polygon points="-13,-82 13,-82 16,-102 -16,-102" fill="#E8C87A" opacity="0.65" transform="rotate(45)"/>
+      <polygon points="-13,-82 13,-82 16,-102 -16,-102" fill="#E8C87A" opacity="0.65" transform="rotate(90)"/>
+      <polygon points="-13,-82 13,-82 16,-102 -16,-102" fill="#E8C87A" opacity="0.65" transform="rotate(135)"/>
+      <polygon points="-13,-82 13,-82 16,-102 -16,-102" fill="#E8C87A" opacity="0.65" transform="rotate(180)"/>
+      <polygon points="-13,-82 13,-82 16,-102 -16,-102" fill="#E8C87A" opacity="0.65" transform="rotate(225)"/>
+      <polygon points="-13,-82 13,-82 16,-102 -16,-102" fill="#E8C87A" opacity="0.65" transform="rotate(270)"/>
+      <polygon points="-13,-82 13,-82 16,-102 -16,-102" fill="#E8C87A" opacity="0.65" transform="rotate(315)"/>
+      <line x1="0" y1="-64" x2="0" y2="64" stroke="#E8C87A" stroke-width="4" opacity="0.35"/>
+      <line x1="-64" y1="0" x2="64" y2="0" stroke="#E8C87A" stroke-width="4" opacity="0.35"/>
+    </g>
+  </svg>
+  <div id="glabel"
+       style="position:absolute;left:0;top:960px;width:1920px;text-align:center;
+              font-size:28px;color:#7BA8C4;letter-spacing:0.32em;text-transform:uppercase;white-space:pre">Engrenagens · Eletrônica · Programação</div>
+</section>
+
+<!-- ═══ BEAT 3b: SENSOR (390–510f / 4s) ═══ -->
+<section id="s3b" class="scene" style="background:#060A12">
+  <div id="slabel"
+       style="position:absolute;left:480px;top:270px;
+              font-size:30px;letter-spacing:0.32em;color:#7BA8C4;text-transform:uppercase;white-space:pre">SENSOR ULTRASSÔNICO · LEITURA AO VIVO</div>
+  <div id="sval"
+       style="position:absolute;left:480px;top:360px;
+              font-size:200px;font-weight:700;color:#00D4FF;
+              font-family:ui-monospace,monospace;line-height:1;white-space:pre">0</div>
+  <div id="sunit"
+       style="position:absolute;left:480px;top:580px;
+              font-size:46px;color:#7BA8C4;letter-spacing:0.2em;white-space:pre">cm</div>
+  <div style="position:absolute;left:480px;top:840px;width:960px;height:4px;
+              background:rgba(0,212,255,0.12);border-radius:2px;"></div>
+  <div id="sbar"
+       style="position:absolute;left:480px;top:840px;width:0;height:4px;
+              background:#00D4FF;border-radius:2px;box-shadow:0 0 10px #00D4FF;"></div>
+  <div style="position:absolute;left:480px;top:860px;font-size:22px;color:#2A4860;white-space:pre">0</div>
+  <div style="position:absolute;left:1388px;top:860px;font-size:22px;color:#2A4860;white-space:pre">200 cm</div>
+</section>
+
+<!-- ═══ BEAT 3c: MISSÃO (510–633f / 4.1s) ═══ -->
+<section id="s3c" class="scene" style="background:#060A12">
+  <svg id="chksvg" viewBox="0 0 200 200"
+       style="position:absolute;left:860px;top:270px;width:200px;height:200px;">
+    <circle id="chkcircle" cx="100" cy="100" r="90" fill="none" stroke="#00D4FF"
+            stroke-width="8" stroke-dasharray="565" stroke-dashoffset="565"/>
+    <polyline id="chkmark" points="52,100 86,134 148,66" fill="none" stroke="#00D4FF"
+              stroke-width="12" stroke-linecap="round" stroke-linejoin="round"
+              stroke-dasharray="130" stroke-dashoffset="130"/>
+  </svg>
+  <div id="mtext"
+       style="position:absolute;left:0;top:530px;width:1920px;text-align:center;
+              font-size:94px;font-weight:700;letter-spacing:0.04em;color:#E8F4FF;white-space:pre">MISSÃO CONCLUÍDA</div>
+  <div id="msub"
+       style="position:absolute;left:0;top:644px;width:1920px;text-align:center;
+              font-size:32px;color:#7BA8C4;letter-spacing:0.28em;white-space:pre">O ROBÔ COMPLETOU O PERCURSO</div>
+</section>
+
+<!-- ═══ BEAT 4: CTA (633–858f / 7.5s) ═══ -->
+<section id="s4" class="scene" style="background:#030508">
+  <div id="ceyebrow"
+       style="position:absolute;left:0;top:280px;width:1920px;text-align:center;
+              font-size:26px;color:#00D4FF;letter-spacing:0.45em;text-transform:uppercase;white-space:pre">INSCRIÇÕES ABERTAS</div>
+  <div id="ch1"
+       style="position:absolute;left:0;top:376px;width:1920px;text-align:center;
+              font-size:124px;font-weight:700;line-height:1.08;color:#E8F4FF;white-space:pre">Aprenda a construir</div>
+  <div id="ch2"
+       style="position:absolute;left:0;top:510px;width:1920px;text-align:center;
+              font-size:124px;font-weight:700;line-height:1.08;color:#E8F4FF;white-space:pre">o futuro</div>
+  <div id="csub"
+       style="position:absolute;left:0;top:660px;width:1920px;text-align:center;
+              font-size:34px;color:#7BA8C4;letter-spacing:0.22em;white-space:pre">Colégio Vivare · Robótica 2025</div>
+  <div id="cbtn"
+       style="position:absolute;left:760px;top:756px;width:400px;text-align:center;
+              padding:28px 0;border:2px solid #00D4FF;color:#00D4FF;
+              font-size:28px;letter-spacing:0.3em;text-transform:uppercase;
+              font-family:var(--font);font-weight:500;white-space:pre">INSCREVA-SE</div>
+</section>
+
+<!-- ═══ END CARD (858–900f / 1.4s) ═══ -->
+<section id="s5" class="scene" style="background:#030508">
+  <div id="elogo"
+       style="position:absolute;left:0;top:412px;width:1920px;text-align:center;
+              font-size:104px;font-weight:700;letter-spacing:0.1em;color:#E8F4FF;white-space:pre">VIV<span style="color:#00D4FF">A</span>RE</div>
+  <div id="etag"
+       style="position:absolute;left:0;top:540px;width:1920px;text-align:center;
+              font-size:26px;color:#7BA8C4;letter-spacing:0.42em;text-transform:uppercase;white-space:pre">CONSTRUA · PROGRAME · INOVE</div>
+  <div id="eline"
+       style="position:absolute;left:860px;top:536px;width:200px;height:1px;
+              background:rgba(0,212,255,0.4);transform-origin:left center;"></div>
+</section>
+
+</div>
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<script>
+const M = Motion.film({ fps: 30, duration: 30, width: 1920, height: 1080, clock: 'smooth' });
+const A = '#00D4FF';
+
+// ─── BEAT 1: HOOK (0–90f) ────────────────────────────────────────────────────
+// Circuit traces draw in
+M.kf('#c1', 'strokeDashoffset', [[0, 800], [60, 0, 'softLand']]);
+M.kf('#c2', 'strokeDashoffset', [[10, 800], [72, 0, 'softLand']]);
+M.kf('#c3', 'strokeDashoffset', [[4, 600], [54, 0, 'softLand']]);
+M.kf('#c4', 'strokeDashoffset', [[16, 700], [76, 0, 'softLand']]);
+M.kf('#c5', 'strokeDashoffset', [[22, 700], [82, 0, 'softLand']]);
+M.kf('#cn1', 'opacity', [[54, 0], [60, 0.9]]);
+M.kf('#cn2', 'opacity', [[66, 0], [72, 0.9]]);
+M.kf('#cn3', 'opacity', [[48, 0], [54, 0.9]]);
+
+// Title crashes in from 3.5× — the hero moment (at:2 avoids flat-field on first frames)
+M.enter('#title', { at: 2, frames: 20, ease: 'snapSettle', from: { scale: 3.5, blur: 10, opacity: 0 } });
+// Never freeze: drift title and add y-float
+M.drift('#title', { prop: 'scale', from: 1, to: 1.04, start: 24, end: 90 });
+M.drift('#title', { prop: 'y', from: 0, to: -6, start: 30, end: 90 });
+
+// Subtitle rises after title lands
+M.enter('#sub1', { at: 32, frames: 14, ease: 'softLand', from: { y: 24, opacity: 0 } });
+
+// Glow line extends left-to-right
+M.kf('#glow-line', 'scaleX', [[28, 0], [42, 1, 'softLand']]);
+M.kf('#glow-line', 'opacity', [[28, 0], [29, 1]]);
+
+// Circuit nodes pulse
+M.drift('#cn1', { prop: 'scale', from: 1, to: 1.6, start: 60, end: 90 });
+M.drift('#cn2', { prop: 'scale', from: 1, to: 1.6, start: 68, end: 90 });
+M.drift('#cn3', { prop: 'scale', from: 1, to: 1.6, start: 54, end: 90 });
+
+// ─── CUT → BEAT 2: CÓDIGO (frame 90) ─────────────────────────────────────────
+M.cut(90, { hide: ['#s1'], show: ['#s2'] });
+
+M.enter('#line-num',    { at: 90, frames: 10, ease: 'softLand', from: { opacity: 0, x: -12 } });
+M.enter('#code-accent', { at: 90, frames: 10, ease: 'softLand', from: { opacity: 0 } });
+M.enter('#fname',       { at: 90, frames: 10, ease: 'softLand', from: { opacity: 0 } });
+
+// Code types character by character — seed gives consistent irregular rhythm
+M.type('#code', { at: 96, style: 'compose', seed: 11, caret: '#caret' });
+
+// ─── CUT → BEAT 3a: ENGRENAGENS (frame 270) ──────────────────────────────────
+M.cut(270, { hide: ['#s2'], show: ['#s3a'] });
+
+M.enter('#gsvg',   { at: 272, frames: 20, ease: 'snapSettle', from: { scale: 0.72, blur: 8, opacity: 0 } });
+M.enter('#glabel', { at: 292, frames: 14, ease: 'softLand',   from: { y: 22, opacity: 0 } });
+
+// Gears spin continuously on a linear cruise (meshed: big CW, small CCW at ~1.5×)
+M.kf('#gbig',   'rotation', [[270, 0], [390, 144,  'cruise']]);
+M.kf('#gsmall', 'rotation', [[270, 0], [390, -216, 'cruise']]);
+
+// ─── CUT → BEAT 3b: SENSOR (frame 390) ───────────────────────────────────────
+M.cut(390, { hide: ['#s3a'], show: ['#s3b'] });
+
+M.enter('#slabel', { at: 392, frames: 12, ease: 'softLand', from: { y: 20, opacity: 0 } });
+M.enter('#sunit',  { at: 404, frames: 10, ease: 'softLand', from: { opacity: 0 } });
+
+// Sensor counts 0 → 42 cm and bar fills proportionally
+M.count('#sval', { at: 400, from: 0, to: 42, frames: 55 });
+// 42/200 × 960px = 201.6 → round to 202
+M.kf('#sbar', 'width', [[400, 0], [455, 202, 'softLand']], { fmt: v => v + 'px' });
+
+// ─── CUT → BEAT 3c: MISSÃO (frame 510) ───────────────────────────────────────
+M.cut(510, { hide: ['#s3b'], show: ['#s3c'] });
+
+M.enter('#chksvg', { at: 512, frames: 10, ease: 'softLand', from: { scale: 0.6, opacity: 0 } });
+// Circle draws then checkmark draws
+M.kf('#chkcircle', 'strokeDashoffset', [[512, 565], [542, 0, 'softLand']]);
+M.kf('#chkmark',   'strokeDashoffset', [[540, 130], [558, 0, 'softLand']]);
+
+M.words('#mtext', { at: 548, mech: 'rise', dist: 64, gaps: [6, 5], ease: 'softLand',
+  accent: { color: A, word: -1, frames: 20 } });
+M.enter('#msub', { at: 566, frames: 14, ease: 'softLand', from: { y: 20, opacity: 0 } });
+
+// Check icon breathes — one living thing on the frame
+M.drift('#chksvg', { prop: 'y', from: 0, to: -10, start: 560, end: 633 });
+
+// ─── CUT → BEAT 4: CTA (frame 633) ───────────────────────────────────────────
+M.cut(633, { hide: ['#s3c'], show: ['#s4'] });
+
+M.enter('#ceyebrow', { at: 633, frames: 14, ease: 'softLand',  from: { y: 20, opacity: 0 } });
+M.words('#ch1', { at: 650, mech: 'rise', dist: 76, gaps: [5, 5, 6, 5], ease: 'softLand' });
+M.words('#ch2', { at: 672, mech: 'rise', dist: 76, gaps: [5, 6],       ease: 'softLand',
+  accent: { color: A, word: -1, frames: 24 } });
+M.enter('#csub', { at: 688, frames: 14, ease: 'softLand', from: { y: 20, opacity: 0 } });
+M.enter('#cbtn', { at: 708, frames: 18, ease: 'snapSettle', from: { scale: 0.88, opacity: 0 } });
+
+// Button pulses — ends in motion on the last frame of this beat
+M.drift('#cbtn', { prop: 'scale', from: 1,    to: 1.04, start: 728, end: 793 });
+M.drift('#cbtn', { prop: 'scale', from: 1.04, to: 1,    start: 793, end: 858 });
+
+// Headlines drift up slowly — keep the frame alive
+M.drift('#ch1', { prop: 'y', from: 0, to: -8, start: 668, end: 858 });
+M.drift('#ch2', { prop: 'y', from: 0, to: -8, start: 668, end: 858 });
+
+// ─── CUT → END CARD (frame 858, 1.4s = 42f) ──────────────────────────────────
+M.cut(858, { hide: ['#s4'], show: ['#s5'] });
+
+M.enter('#elogo', { at: 858, frames: 22, ease: 'snapSettle', from: { scale: 1.45, blur: 8, opacity: 0 } });
+M.enter('#etag',  { at: 874, frames: 12, ease: 'softLand',   from: { y: 16, opacity: 0 } });
+M.kf('#eline', 'scaleX',  [[876, 0], [886, 1, 'softLand']]);
+M.kf('#eline', 'opacity', [[876, 0], [877, 1]]);
+
+// Logo drifts — film ends in motion, never frozen
+M.drift('#elogo', { prop: 'scale', from: 1, to: 0.97, start: 880, end: 900 });
+
+window.__ready = Motion.loaded().then(() => {
+  if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 });
+});
+</script>
+</body>
+</html>
